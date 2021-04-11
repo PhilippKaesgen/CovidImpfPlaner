@@ -60,24 +60,7 @@ public class DateTableCell<T> extends TableCell<T, LocalDate> {
         });
         setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 
-        this.datePicker.setConverter(new StringConverter<LocalDate>() {
-
-            @Override public String toString(final LocalDate date) {
-                if (date != null) {
-                    return PatientEntry.DATE_FORMATTER.format(date);
-                } else {
-                    return "";
-                }
-            }
-
-            @Override public LocalDate fromString(final String string) {
-                if (string != null && !string.isEmpty()) {
-                    return LocalDate.parse(string, PatientEntry.DATE_FORMATTER);
-                } else {
-                    return null;
-                }
-            }
-        });
+        this.datePicker.setConverter(new LocalDateConverter());
 
     }
 
