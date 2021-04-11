@@ -60,16 +60,16 @@ public class PatientListFunctions {
      * vaccine doses are left for first time vaccination patients.
      * @param patients
      * @param vaccine
-     * @param delivered
+     * @param list
      * @param startDate
      * @param endDate
      * @return number of left vaccination doses
      */
     public final int remainingVaccine(final List<PatientEntry> patients,
-        final VaccineBrand vaccine, final int delivered,
+        final VaccineBrand vaccine, final int list,
         final LocalDate startDate, final LocalDate endDate) {
 
-        int result = delivered;
+        int result = list;
 
         for (PatientEntry p : patients) {
             if (!p.isSecondVaccinationDone()

@@ -24,6 +24,7 @@ package kaesgen.med;
 import java.io.File;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +40,7 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
@@ -58,9 +60,12 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TableView.TableViewSelectionModel;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -218,16 +223,18 @@ public class MainSceneController implements Initializable {
         System.out.println("Calculating minimal vaccine order");
 
         Dialog<Pair<LocalDate, LocalDate>> dialog = new Dialog<>();
-        dialog.setTitle("Für welchen Zeitraum soll Impfstoff bestellt werden?");
+        dialog.setTitle("Vorbestellung");
+        dialog.setHeaderText(
+            "Für welchen Zeitraum soll Impfstoff bestellt werden?");
 
         dialog.getDialogPane().getButtonTypes()
-        .addAll(ButtonType.APPLY);
+        .addAll(ButtonType.OK);
 
         Node btn = dialog.getDialogPane()
-            .lookupButton(ButtonType.APPLY);
+            .lookupButton(ButtonType.OK);
         btn.setDisable(true);
 
-        VBox vbox = new VBox();
+        HBox vbox = new HBox();
 
         Label msg = new Label();
 
@@ -246,7 +253,8 @@ public class MainSceneController implements Initializable {
 
             btn.setDisable(true);
             msg.setText("");
-            if (newValue.compareTo(endDate.getValue()) > 0) {
+            if (endDate != null && newValue != null
+                && newValue.compareTo(endDate.getValue()) > 0) {
                 msg.setText(
                     "Startdatum darf nicht nach dem Enddatum liegen.");
             } else {
@@ -260,7 +268,8 @@ public class MainSceneController implements Initializable {
 
             btn.setDisable(true);
             msg.setText("");
-            if (startDate.getValue().compareTo(newValue) > 0) {
+            if (startDate != null && newValue != null
+                && startDate.getValue().compareTo(newValue) > 0) {
                 msg.setText(
                     "Enddatum darf nicht vor dem Startdatum liegen.");
             } else {
@@ -269,7 +278,7 @@ public class MainSceneController implements Initializable {
         });
 
         dialog.setResultConverter(okbutton -> {
-            if (okbutton == ButtonType.APPLY) {
+            if (okbutton == ButtonType.OK) {
                 return new Pair<>(startDate.getValue(), endDate.getValue());
             }
             return null;
@@ -327,6 +336,147 @@ public class MainSceneController implements Initializable {
     private void remainingVaccineClicked() {
         System.out.println(
             "Calculating remaining vaccine for first time patients");
+
+        Dialog<Pair<Pair<LocalDate, LocalDate>, List<Integer>>> dialog
+            = new Dialog<>();
+        dialog.setTitle("Übrige Impfdosen");
+        dialog.setHeaderText("Für welchen Zeitraum sollen unter Angabe der "
+        + "ge-\nlieferten Impfstoffe die Impfdosen nach Abzug der\n"
+        + "vorgemerkten Zweitimpfungen berechnet werden?");
+
+        dialog.getDialogPane().getButtonTypes()
+        .addAll(ButtonType.OK);
+
+        Node btn = dialog.getDialogPane()
+            .lookupButton(ButtonType.OK);
+        btn.setDisable(true);
+
+        GridPane gridpane = new GridPane();
+        gridpane.setPadding(new Insets(5));
+        gridpane.setHgap(5);
+        gridpane.setVgap(5);
+
+        Label msg = new Label();
+
+        //TextField startDate = new TextField();
+        DatePicker startDate = new DatePicker();
+        startDate.setPromptText("Startdatum dd.mm.jjjj");
+        startDate.setConverter(new LocalDateConverter());
+
+        //TextField endDate = new TextField();
+        DatePicker endDate = new DatePicker();
+        endDate.setPromptText("Enddatum dd.mm.jjjj");
+        endDate.setConverter(new LocalDateConverter());
+
+
+        gridpane.add(startDate, 0, 0);
+        gridpane.add(endDate, 1, 0);
+
+
+        Map<VaccineBrand, TextField> deliveries = new HashMap<>();
+        for (VaccineBrand v : VaccineBrand.values()) {
+            gridpane.add(new Label(v.getValue()), 0, v.ordinal() + 1);
+            TextField temp = new TextField();
+            deliveries.put(v, temp);
+            gridpane.add(temp, 1, v.ordinal() + 1);
+        }
+
+        startDate.valueProperty().addListener(
+        (obs, oldValue, newValue) -> {
+
+            btn.setDisable(true);
+            msg.setText("");
+            if (endDate != null && newValue != null
+                && newValue.compareTo(endDate.getValue()) > 0) {
+                msg.setText(
+                    "Startdatum darf nicht nach dem Enddatum liegen.");
+            } else {
+                btn.setDisable(false);
+            }
+
+        });
+
+        endDate.valueProperty().addListener(
+        (obs, oldValue, newValue) -> {
+
+            btn.setDisable(true);
+            msg.setText("");
+            if (startDate != null && newValue != null
+                && startDate.getValue().compareTo(newValue) > 0) {
+                msg.setText(
+                    "Enddatum darf nicht vor dem Startdatum liegen.");
+            } else {
+                btn.setDisable(false);
+            }
+        });
+
+        dialog.setResultConverter(okbutton -> {
+            if (okbutton == ButtonType.OK) {
+                List<Integer> deliveryNumbers = new ArrayList<>();
+                for (TextField t : deliveries.values()) {
+                    int temp = 0;
+                    try {
+                        temp = Integer.parseInt(t.getText());
+                    } catch (Exception e) {
+                    }
+                    deliveryNumbers.add(temp);
+                }
+                return new Pair<>(
+                    new Pair<>(startDate.getValue(), endDate.getValue()),
+                        deliveryNumbers);
+            }
+            return null;
+        });
+
+        dialog.getDialogPane().setContent(gridpane);
+
+
+        Optional<Pair<Pair<LocalDate, LocalDate>, List<Integer>>> datesFtr =
+            dialog.showAndWait();
+
+        datesFtr.ifPresent(fields -> {
+
+            Map<VaccineBrand, Task<Integer>> threadPool = new HashMap<>();
+
+            for (int i = 0; i < VaccineBrand.values().length; i++) {
+                VaccineBrand v = VaccineBrand.values()[i];
+                int delivered = fields.getValue().get(i);
+                Task<Integer> temp = new Task<Integer>() {
+                    @Override
+                    protected Integer call() throws Exception {
+                        return (new PatientListFunctions())
+                            .remainingVaccine(patients, v,
+                            delivered, fields.getKey().getKey(),
+                            fields.getKey().getValue());
+                    }
+                };
+
+                threadPool.put(v, temp);
+
+                (new Thread(temp)).start();
+            }
+
+            try {
+                Alert remainingVaccines =
+                    new Alert(Alert.AlertType.INFORMATION);
+                remainingVaccines.setTitle("Bestellliste mit Mindestmengen");
+                remainingVaccines.setHeaderText("Für den Zeitraum vom "
+                    + fields.getKey().getKey() + " bis "
+                    + fields.getKey().getValue()
+                    + " werden folgende Mengen benötigt:");
+
+                String contentText = "";
+                for (VaccineBrand v : VaccineBrand.values()) {
+                    contentText += v.getValue() + ": "
+                        + threadPool.get(v).get() + "\n";
+                }
+
+                remainingVaccines.setContentText(contentText);
+                remainingVaccines.showAndWait();
+            } catch (Exception e) {
+            }
+
+        });
 
     }
 

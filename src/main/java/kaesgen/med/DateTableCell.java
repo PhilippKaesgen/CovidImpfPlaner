@@ -29,7 +29,6 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.util.StringConverter;
 
 public class DateTableCell<T> extends TableCell<T, LocalDate> {
     /**
