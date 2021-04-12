@@ -31,19 +31,22 @@ für Priorisierung o.ä.
 3. Speichern der Anmeldedaten in einer passwortgeschützten Datei (Passwort
 wird vom Benutzer beim Speichern festgelegt und muss zum Öffnen erneut
 eingegeben werden).
+4. Die Mindestbestellmenge für einen wählbaren Zeitraum aus den angemeldeten
+Zweitimpflingen bestimmen können.
+5. Aus der Rückmeldung der Apotheke über die tatsächlich lieferbaren Impfdosen
+die möglichen Erstimpflinge für einen wählbaren Zeitraum berechnen.
 
 ## Funktionen in Arbeit
 
 Mit den Informationen im CovidImpfplaner soll dieses Programm demnächst:
-1. Die Mindestbestellmenge für einen wählbaren Zeitraum aus den angemeldeten
-Zweitimpflingen bestimmen können.
-2. Aus der Rückmeldung der Apotheke über die tatsächlich lieferbaren Impfdosen
-die möglichen Erstimpflinge für einen wählbaren Zeitraum berechnen.
+1. Eingabemaske für Patientendaten.
+2. "Wer kommt wann?" Heraussuchen der Patienten, die einen Termin in einem
+vom Benutzer festgelegten Zeitraum haben.
 
 ## Anregungen und Support
 
 Für Anregungen zur Verbesserung des Programms bin ich offen. Support-Anfragen
-können individuell gesetellt werden.
+können individuell gestellt werden.
 
 pkaesgen(AT)freenet.de
 
