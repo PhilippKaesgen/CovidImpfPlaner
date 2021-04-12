@@ -500,4 +500,9 @@ public class PatientEntry  implements Serializable {
         return true;
     }
 
+    public String toString() {
+        return firstName + " " + lastName + " (Tel: " + landline + ", Mobil: "
+            + mobile + "), Zusatzinformationen: " + additionalInfo;
+    }
+
 }

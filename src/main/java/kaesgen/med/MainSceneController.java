@@ -218,6 +218,127 @@ public class MainSceneController implements Initializable {
 
     }
 
+    // ########################################################################
+
+    @FXML
+    private void whosComingClicked() {
+        Dialog<Pair<LocalDate, LocalDate>> dialog = new Dialog<>();
+        dialog.setTitle("Terminfilter");
+        dialog.setHeaderText(
+            "Für welchen Zeitraum sollen die Patienten mit Terminen\n"
+            + "gefunden werden?");
+
+        dialog.getDialogPane().getButtonTypes()
+        .addAll(ButtonType.OK);
+
+        Node btn = dialog.getDialogPane()
+            .lookupButton(ButtonType.OK);
+        btn.setDisable(true);
+
+        HBox vbox = new HBox();
+
+        Label msg = new Label();
+
+        //TextField startDate = new TextField();
+        DatePicker startDate = new DatePicker();
+        startDate.setPromptText("Startdatum dd.mm.jjjj");
+        startDate.setConverter(new LocalDateConverter());
+
+        //TextField endDate = new TextField();
+        DatePicker endDate = new DatePicker();
+        endDate.setPromptText("Enddatum dd.mm.jjjj");
+        endDate.setConverter(new LocalDateConverter());
+
+        startDate.valueProperty().addListener(
+        (obs, oldValue, newValue) -> {
+
+            btn.setDisable(true);
+            msg.setText("");
+            if (endDate != null && newValue != null
+                && newValue.compareTo(endDate.getValue()) > 0) {
+                msg.setText(
+                    "Startdatum darf nicht nach dem Enddatum liegen.");
+            } else {
+                btn.setDisable(false);
+            }
+
+        });
+
+        endDate.valueProperty().addListener(
+        (obs, oldValue, newValue) -> {
+
+            btn.setDisable(true);
+            msg.setText("");
+            if (startDate != null && newValue != null
+                && startDate.getValue().compareTo(newValue) > 0) {
+                msg.setText(
+                    "Enddatum darf nicht vor dem Startdatum liegen.");
+            } else {
+                btn.setDisable(false);
+            }
+        });
+
+        dialog.setResultConverter(okbutton -> {
+            if (okbutton == ButtonType.OK) {
+                return new Pair<>(startDate.getValue(), endDate.getValue());
+            }
+            return null;
+        });
+
+        vbox.getChildren().addAll(startDate, endDate);
+
+        dialog.getDialogPane().setContent(vbox);
+
+
+        Optional<Pair<LocalDate, LocalDate>> datesFtr = dialog.showAndWait();
+
+        datesFtr.ifPresent(dates -> {
+            LocalDate start = dates.getKey();
+            LocalDate end = dates.getValue();
+
+            Task<List<PatientEntry>> getScheduledPatients =  new Task<>() {
+                @Override
+                protected List<PatientEntry> call() throws Exception {
+                    List<PatientEntry> scheduledPatients = new ArrayList<>();
+                    for (PatientEntry p : patients) {
+                        if (p.getFirstVaccinationDate().compareTo(start) >= 0
+                        && p.getFirstVaccinationDate().compareTo(end) <= 0
+                        || p.getSecondVaccinationDate().compareTo(start) >= 0
+                        && p.getSecondVaccinationDate().compareTo(end) <= 0) {
+
+                            scheduledPatients.add(p);
+                        }
+                    }
+                    return scheduledPatients;
+                }
+            };
+
+            new Thread(getScheduledPatients).start();
+
+            try {
+                Alert orderList = new Alert(Alert.AlertType.INFORMATION);
+                orderList.setTitle("Patientenliste");
+                orderList.setHeaderText("Im Zeitraum vom "
+                    + dates.getKey() + " bis " + dates.getValue()
+                    + " kommen folgende Patienten:");
+
+                String contentText = "";
+                for (PatientEntry p : getScheduledPatients.get()) {
+                    contentText += p.toString() + "\n";
+                }
+
+                orderList.setContentText(contentText);
+                orderList.showAndWait();
+            } catch (Exception e) {
+            }
+
+
+        });
+
+    }
+
+    // ########################################################################
+
     @FXML
     private void calculateOrderClicked() {
         System.out.println("Calculating minimal vaccine order");
@@ -331,6 +452,7 @@ public class MainSceneController implements Initializable {
         });
     }
 
+    // ########################################################################
 
     @FXML
     private void remainingVaccineClicked() {
@@ -479,6 +601,8 @@ public class MainSceneController implements Initializable {
         });
 
     }
+
+    // ########################################################################
 
     @FXML
     private void about() {
