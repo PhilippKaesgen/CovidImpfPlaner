@@ -27,7 +27,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,8 +62,8 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.TableView.TableViewSelectionModel;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.GridPane;
@@ -1065,12 +1064,12 @@ public class MainSceneController implements Initializable {
             new PropertyValueFactory<>("registrationDate"));
         registrationDate.setComparator((a, b) -> {
 
-            DateTimeFormatter dt = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+            DateTimeFormatter dt = DateTimeFormatter
+                .ofPattern("dd.MM.yyyy HH:mm:ss");
             LocalDateTime t1 = LocalDateTime.parse(a, dt);
             LocalDateTime t2 = LocalDateTime.parse(b, dt);
 
             return t1.compareTo(t2);
-            
         });
 
         id.setCellValueFactory(new PropertyValueFactory<>("id"));

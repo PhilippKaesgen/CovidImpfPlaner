@@ -38,7 +38,7 @@ public class LocalDateConverter extends StringConverter<LocalDate> {
     @Override public final LocalDate fromString(final String string) {
         try {
             return LocalDate.parse(string, PatientEntry.DATE_FORMATTER);
-        } catch(Exception e) {
+        } catch (Exception e) {
             return null;
         }
     }

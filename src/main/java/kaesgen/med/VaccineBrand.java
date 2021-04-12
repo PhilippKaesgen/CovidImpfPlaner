@@ -23,7 +23,7 @@ package kaesgen.med;
 
 public enum VaccineBrand {
     /** Astrazeneca. */
-    Astrazeneca("Astrazeneca"),
+    AstraZeneca("AstraZeneca"),
     /** BioNTech. */
     BioNTech("BioNTech"),
     /** Johnson & Johnson. */
@@ -33,7 +33,19 @@ public enum VaccineBrand {
     /** Novavax. */
     Novavax("Novavax"),
     /** Sputnik. */
-    SputnikV("Sputnik V");
+    SputnikV("Sputnik V"),
+    /** Curevac. */
+    CureVac("CureVac"),
+    /** Sanofi. */
+    Sanofi("Sanofi"),
+    /** BBIBP-Corv. */
+    BBIBPCorV("BBIBP-CorV"),
+    /** CoronaVac. */
+    CoronaVac("CoronaVac"),
+    /** Covaxin. */
+    Covaxin("Covaxin"),
+    /** Convidecia. */
+    Convidecia("Convidecia");
 
     /**
      * private field String.
