@@ -46,6 +46,7 @@
                     <items>
                       <MenuItem fx:id="calculateOrder" mnemonicParsing="false" onAction="#calculateOrderClicked" text="Mindestbestellmenge berechnen" />
                         <MenuItem fx:id="remainingVaccine" mnemonicParsing="false" onAction="#remainingVaccineClicked" text="Übrige Impfdosen berechnen" />
+                        <MenuItem fx:id="whosComing" mnemonicParsing="false" onAction="#whosComingClicked" text="Wer kommt am..." />
                     </items>
                   </Menu>
                 <Menu mnemonicParsing="false" text="Hilfe">
