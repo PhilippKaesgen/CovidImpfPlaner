@@ -66,6 +66,7 @@ public class App extends Application {
             .addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST,
             this::closeWindowEvent);
         stage.show();
+        stage.setTitle("CovidImpfplaner");
 
     }
 

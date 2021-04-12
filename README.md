@@ -26,18 +26,23 @@ Folgende Funktionen werden geboten:
 1. Patientendaten hinzufügen: Patienten-ID aus der praxiseigenen Datenbank,
 Vor- und Nachname, Geburtsdatum, Telefonnummern, zusätzliches Informationsfeld
 für Priorisierung o.ä.
+![](images/anmelden.gif)
 2. Impftermine vereinbaren.
+![](images/termin.gif)
 3. Sortierung der Patienten nach verschiedenen Kriterien.
+4. Die Mindestbestellmenge für einen wählbaren Zeitraum aus den angemeldeten
+Zweitimpflingen bestimmen können.
+![](images/mindestbestellung.gif)
+5. Aus der Rückmeldung der Apotheke über die tatsächlich lieferbaren Impfdosen
+die möglichen Erstimpflinge für einen wählbaren Zeitraum berechnen.
+![](images/uebrig.gif)
+6. "Wer kommt wann?" Heraussuchen der Patienten, die einen Termin in einem
+vom Benutzer wählbaren Zeitraum haben.
+![](images/werkommt.gif)
 3. Speichern der Anmeldedaten in einer passwortgeschützten Datei (Passwort
 wird vom Benutzer beim Speichern festgelegt und muss zum Öffnen erneut
 eingegeben werden).
-4. Die Mindestbestellmenge für einen wählbaren Zeitraum aus den angemeldeten
-Zweitimpflingen bestimmen können.
-5. Aus der Rückmeldung der Apotheke über die tatsächlich lieferbaren Impfdosen
-die möglichen Erstimpflinge für einen wählbaren Zeitraum berechnen.
-6. Eingabemaske für Patientendaten.
-7. "Wer kommt wann?" Heraussuchen der Patienten, die einen Termin in einem
-vom Benutzer wählbaren Zeitraum haben.
+![](images/speichern.gif)
 
 ## Anregungen und Support
 

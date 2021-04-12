@@ -226,8 +226,8 @@ public class MainSceneController implements Initializable {
         lastNameT.setPromptText("Nachname");
         TextField firstNameT = new TextField();
         firstNameT.setPromptText("Vorname");
-        DatePicker birthdayT = new DatePicker();
-        //birthday.setPromptText("Geburtsdatum");
+        TextField birthdayT = new TextField();
+        birthdayT.setPromptText("Geburtsdatum");
         TextField additionalInfoT = new TextField();
         additionalInfoT.setPromptText("Zusatzinformationen");
         TextField landlineT = new TextField();
@@ -247,7 +247,7 @@ public class MainSceneController implements Initializable {
 
 
         // sanity check
-        id.textProperty().addListener((obs, newValue, oldValue) -> {
+        idT.textProperty().addListener((obs, newValue, oldValue) -> {
             btn.setDisable(true);
             try {
                 Integer.parseInt(newValue);
@@ -255,7 +255,8 @@ public class MainSceneController implements Initializable {
             } catch (Exception e) {
                 if (PatientEntry.isName(firstNameT.getText())
                     && PatientEntry.isName(lastNameT.getText())
-                    && birthdayT.getValue() != null
+                    && (new LocalDateConverter())
+                        .fromString(birthdayT.getText()) != null
                     && (PatientEntry.isPhoneNumber(landlineT.getText())
                     || PatientEntry.isPhoneNumber(mobileT.getText()))) {
                         btn.setDisable(false);
@@ -264,7 +265,7 @@ public class MainSceneController implements Initializable {
             }
         });
 
-        firstName.textProperty().addListener((obs, newValue, oldValue) -> {
+        firstNameT.textProperty().addListener((obs, newValue, oldValue) -> {
             btn.setDisable(true);
             try {
                 Integer.parseInt(idT.getText());
@@ -272,7 +273,8 @@ public class MainSceneController implements Initializable {
             } catch (Exception e) {
                 if (PatientEntry.isName(newValue)
                     && PatientEntry.isName(lastNameT.getText())
-                    && birthdayT.getValue() != null
+                    && (new LocalDateConverter())
+                        .fromString(birthdayT.getText()) != null
                     && (PatientEntry.isPhoneNumber(landlineT.getText())
                     || PatientEntry.isPhoneNumber(mobileT.getText()))) {
                         btn.setDisable(false);
@@ -281,7 +283,7 @@ public class MainSceneController implements Initializable {
             }
         });
 
-        lastName.textProperty().addListener((obs, oldValue, newValue) -> {
+        lastNameT.textProperty().addListener((obs, oldValue, newValue) -> {
             btn.setDisable(true);
             try {
                 Integer.parseInt(idT.getText());
@@ -289,7 +291,8 @@ public class MainSceneController implements Initializable {
             } catch (Exception e) {
                 if (PatientEntry.isName(newValue)
                     && PatientEntry.isName(firstNameT.getText())
-                    && birthdayT.getValue() != null
+                    && (new LocalDateConverter())
+                        .fromString(birthdayT.getText()) != null
                     && (PatientEntry.isPhoneNumber(landlineT.getText())
                     || PatientEntry.isPhoneNumber(mobileT.getText()))) {
                         btn.setDisable(false);
@@ -297,7 +300,7 @@ public class MainSceneController implements Initializable {
             }
         });
 
-        birthday.textProperty().addListener((obs, oldValue, newValue) -> {
+        birthdayT.textProperty().addListener((obs, oldValue, newValue) -> {
             btn.setDisable(true);
             try {
                 Integer.parseInt(idT.getText());
@@ -305,7 +308,7 @@ public class MainSceneController implements Initializable {
             } catch (Exception e) {
                 if (PatientEntry.isName(lastNameT.getText())
                     && PatientEntry.isName(firstNameT.getText())
-                    && newValue != null
+                    && (new LocalDateConverter()).fromString(newValue) != null
                     && (PatientEntry.isPhoneNumber(landlineT.getText())
                     || PatientEntry.isPhoneNumber(mobileT.getText()))) {
                         btn.setDisable(false);
@@ -314,7 +317,7 @@ public class MainSceneController implements Initializable {
             }
         });
 
-        landline.textProperty().addListener((obs, oldValue, newValue) -> {
+        landlineT.textProperty().addListener((obs, oldValue, newValue) -> {
             btn.setDisable(true);
             try {
                 Integer.parseInt(idT.getText());
@@ -322,7 +325,8 @@ public class MainSceneController implements Initializable {
             } catch (Exception e) {
                 if (PatientEntry.isName(lastNameT.getText())
                     && PatientEntry.isName(firstNameT.getText())
-                    && birthdayT.getValue() != null
+                    && (new LocalDateConverter())
+                        .fromString(birthdayT.getText()) != null
                     && (PatientEntry.isPhoneNumber(newValue)
                     || PatientEntry.isPhoneNumber(mobileT.getText()))) {
                         btn.setDisable(false);
@@ -331,7 +335,7 @@ public class MainSceneController implements Initializable {
             }
         });
 
-        mobile.textProperty().addListener((obs, oldValue, newValue) -> {
+        mobileT.textProperty().addListener((obs, oldValue, newValue) -> {
             btn.setDisable(true);
             try {
                 Integer.parseInt(idT.getText());
@@ -339,7 +343,8 @@ public class MainSceneController implements Initializable {
             } catch (Exception e) {
                 if (PatientEntry.isName(lastNameT.getText())
                     && PatientEntry.isName(firstNameT.getText())
-                    && birthdayT.getValue() != null
+                    && (new LocalDateConverter())
+                        .fromString(birthdayT.getText()) != null
                     && (PatientEntry.isPhoneNumber(landlineT.getText())
                     || PatientEntry.isPhoneNumber(newValue))) {
                         btn.setDisable(false);
@@ -360,7 +365,8 @@ public class MainSceneController implements Initializable {
 
                 PatientEntry p = new PatientEntry(temp,
                     lastNameT.getText(), firstNameT.getText(),
-                    birthdayT.getValue(), additionalInfoT.getText(),
+                    (new LocalDateConverter()).fromString(birthdayT.getText()),
+                    additionalInfoT.getText(),
                     landlineT.getText(), mobileT.getText(),
                     null, false, null, null, false, null);
 
@@ -712,13 +718,16 @@ public class MainSceneController implements Initializable {
         dialog.setResultConverter(okbutton -> {
             if (okbutton == ButtonType.OK) {
                 List<Integer> deliveryNumbers = new ArrayList<>();
-                for (TextField t : deliveries.values()) {
+                for (VaccineBrand v : VaccineBrand.values()) {
+                    TextField t = deliveries.get(v);
                     int temp = 0;
                     try {
                         temp = Integer.parseInt(t.getText());
                     } catch (Exception e) {
+                        temp = 0;
+                    } finally {
+                        deliveryNumbers.add(temp);
                     }
-                    deliveryNumbers.add(temp);
                 }
                 return new Pair<>(
                     new Pair<>(startDate.getValue(), endDate.getValue()),
@@ -1038,7 +1047,6 @@ public class MainSceneController implements Initializable {
 
         this.stage = new Stage();
 
-        this.stage.setTitle("CovidImpfplaner");
 
         patients = FXCollections.observableArrayList();
         table1.setItems(patients);
