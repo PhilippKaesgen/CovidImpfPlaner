@@ -500,18 +500,15 @@ public class MainSceneController implements Initializable {
             new Thread(getScheduledPatients).start();
 
             try {
+                List<PatientEntry> temp = getScheduledPatients.get();
+
+                patients.removeAll(temp);
+                patients.addAll(0,temp);
                 Alert orderList = new Alert(Alert.AlertType.INFORMATION);
                 orderList.setTitle("Patientenliste");
-                orderList.setHeaderText("Im Zeitraum vom "
-                    + dates.getKey() + " bis " + dates.getValue()
-                    + " kommen folgende Patienten:");
-
-                String contentText = "";
-                for (PatientEntry p : getScheduledPatients.get()) {
-                    contentText += p.toString() + "\n";
-                }
-
-                orderList.setContentText(contentText);
+                orderList.setContentText(temp.size() + " Patienten mit "
+                + "Impftermin im genannten Zeitraum wurden an den Anfang "
+                + "der Tabelle geschoben.");
                 orderList.showAndWait();
             } catch (Exception e) {
             }
