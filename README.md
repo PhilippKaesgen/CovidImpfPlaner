@@ -30,6 +30,7 @@ für Priorisierung o.ä.
 2. Impftermine vereinbaren.
 ![](images/termin.gif)
 3. Sortierung der Patienten nach verschiedenen Kriterien.
+![](images/sortieren.gif)
 4. Die Mindestbestellmenge für einen wählbaren Zeitraum aus den angemeldeten
 Zweitimpflingen bestimmen können.
 ![](images/mindestbestellung.gif)
