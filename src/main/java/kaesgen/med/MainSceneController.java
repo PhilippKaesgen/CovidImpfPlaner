@@ -246,15 +246,6 @@ public class MainSceneController implements Initializable {
         gridpane.add(mobileT, 0, 7);
 
 
-/*
-        PatientEntry patient1 = new PatientEntry(5, "Schmidt", "Hans",
-            LocalDate.of(1970, 1, 1), "COPD", "01234/234512",
-            "", null, false, null, null, false, null);
-        PatientEntry patient2 = new PatientEntry(5, "Ludwig", "Karl",
-            LocalDate.of(1950, 5, 4), "Krebs", "01234/234512",
-            "", null, false, null, null, false, null);*/
-
-
         // sanity check
         id.textProperty().addListener((obs, newValue, oldValue) -> {
             btn.setDisable(true);
@@ -395,7 +386,9 @@ public class MainSceneController implements Initializable {
         Optional<PatientEntry> pFtr = dialog.showAndWait();
 
         pFtr.ifPresent(p -> {
-            patients.add(p);
+            if (p!=null){
+                patients.add(p);
+            }
         });
 
 
