@@ -92,7 +92,7 @@ public class FileHandlerTest {
         String fileName = "newFile.txt";
         String password = "key";
 
-        PatientEntry p = new PatientEntry(5,"Schmidt","Hans",LocalDate.of(1970,1,1),"COPD","01234/234512","",null,false,VaccineBrand.Astrazeneca,null,false,VaccineBrand.JohnsonNJohnson);
+        PatientEntry p = new PatientEntry(5,"Schmidt","Hans",LocalDate.of(1970,1,1),"COPD","01234/234512","",null,false,VaccineBrand.AstraZeneca,null,false,VaccineBrand.JohnsonNJohnson);
         
         List<PatientEntry> golden = new ArrayList<>();
 
