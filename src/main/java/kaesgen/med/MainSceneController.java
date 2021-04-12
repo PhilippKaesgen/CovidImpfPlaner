@@ -392,7 +392,7 @@ public class MainSceneController implements Initializable {
         Optional<PatientEntry> pFtr = dialog.showAndWait();
 
         pFtr.ifPresent(p -> {
-            if (p!=null){
+            if (p != null) {
                 patients.add(p);
             }
         });
