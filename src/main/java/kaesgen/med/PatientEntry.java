@@ -159,7 +159,10 @@ public class PatientEntry  implements Serializable {
      * @return String
      */
     public String getRegistrationDate() {
-        return DATE_FORMATTER.format(this.registrationDate);
+        String pattern = DATE_PATTERN + " hh:mm:ss";
+        DateTimeFormatter dt = DateTimeFormatter.ofPattern(pattern);
+
+        return dt.format(this.registrationDate);
     }
 
     /**
