@@ -767,11 +767,11 @@ public class MainSceneController implements Initializable {
             try {
                 Alert remainingVaccines =
                     new Alert(Alert.AlertType.INFORMATION);
-                remainingVaccines.setTitle("Bestellliste mit Mindestmengen");
+                remainingVaccines.setTitle("Übrige Impfdosen");
                 remainingVaccines.setHeaderText("Für den Zeitraum vom "
                     + fields.getKey().getKey() + " bis "
                     + fields.getKey().getValue()
-                    + " werden folgende Mengen benötigt:");
+                    + " sind folgende Impfdosen für Erstimpfungen übrig:");
 
                 String contentText = "";
                 for (VaccineBrand v : VaccineBrand.values()) {
