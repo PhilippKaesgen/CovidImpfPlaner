@@ -200,21 +200,204 @@ public class MainSceneController implements Initializable {
         System.out.println("Registering patient");
 
         changeMonitor = true;
+
         // open another view with textboxes
 
+        Dialog<PatientEntry> dialog = new Dialog<>();
+        dialog.setTitle("Neuen Patienten anmelden");
+
+
+        dialog.getDialogPane().getButtonTypes()
+        .addAll(ButtonType.OK);
+
+        Node btn = dialog.getDialogPane()
+            .lookupButton(ButtonType.OK);
+        btn.setDisable(true);
+
+        GridPane gridpane = new GridPane();
+        gridpane.setPadding(new Insets(5));
+        gridpane.setHgap(5);
+        gridpane.setVgap(5);
+
+        Label msg = new Label();
+        TextField idT = new TextField();
+        idT.setPromptText("Patienten-ID");
+        TextField lastNameT = new TextField();
+        lastNameT.setPromptText("Nachname");
+        TextField firstNameT = new TextField();
+        firstNameT.setPromptText("Vorname");
+        DatePicker birthdayT = new DatePicker();
+        //birthday.setPromptText("Geburtsdatum");
+        TextField additionalInfoT = new TextField();
+        additionalInfoT.setPromptText("Zusatzinformationen");
+        TextField landlineT = new TextField();
+        landlineT.setPromptText("Festnetznummer");
+        TextField mobileT = new TextField();
+        mobileT.setPromptText("Mobiltelefonnr.");
+
+        gridpane.add(msg, 0, 0);
+
+        gridpane.add(idT, 0, 1);
+        gridpane.add(lastNameT, 0, 2);
+        gridpane.add(firstNameT, 0, 3);
+        gridpane.add(birthdayT, 0, 4);
+        gridpane.add(additionalInfoT, 0, 5);
+        gridpane.add(landlineT, 0, 6);
+        gridpane.add(mobileT, 0, 7);
+
+
+/*
         PatientEntry patient1 = new PatientEntry(5, "Schmidt", "Hans",
             LocalDate.of(1970, 1, 1), "COPD", "01234/234512",
             "", null, false, null, null, false, null);
         PatientEntry patient2 = new PatientEntry(5, "Ludwig", "Karl",
             LocalDate.of(1950, 5, 4), "Krebs", "01234/234512",
-            "", null, false, null, null, false, null);
+            "", null, false, null, null, false, null);*/
+
 
         // sanity check
+        id.textProperty().addListener((obs, newValue, oldValue) -> {
+            btn.setDisable(true);
+            try {
+                Integer.parseInt(newValue);
+                btn.setDisable(false);
+            } catch (Exception e) {
+                if (PatientEntry.isName(firstNameT.getText())
+                    && PatientEntry.isName(lastNameT.getText())
+                    && birthdayT.getValue() != null
+                    && (PatientEntry.isPhoneNumber(landlineT.getText())
+                    || PatientEntry.isPhoneNumber(mobileT.getText()))) {
+                        btn.setDisable(false);
+                    }
 
-        // check for duplicates
+            }
+        });
 
-        patients.add(patient1);
-        patients.add(patient2);
+        firstName.textProperty().addListener((obs, newValue, oldValue) -> {
+            btn.setDisable(true);
+            try {
+                Integer.parseInt(idT.getText());
+                btn.setDisable(false);
+            } catch (Exception e) {
+                if (PatientEntry.isName(newValue)
+                    && PatientEntry.isName(lastNameT.getText())
+                    && birthdayT.getValue() != null
+                    && (PatientEntry.isPhoneNumber(landlineT.getText())
+                    || PatientEntry.isPhoneNumber(mobileT.getText()))) {
+                        btn.setDisable(false);
+                    }
+
+            }
+        });
+
+        lastName.textProperty().addListener((obs, oldValue, newValue) -> {
+            btn.setDisable(true);
+            try {
+                Integer.parseInt(idT.getText());
+                btn.setDisable(false);
+            } catch (Exception e) {
+                if (PatientEntry.isName(newValue)
+                    && PatientEntry.isName(firstNameT.getText())
+                    && birthdayT.getValue() != null
+                    && (PatientEntry.isPhoneNumber(landlineT.getText())
+                    || PatientEntry.isPhoneNumber(mobileT.getText()))) {
+                        btn.setDisable(false);
+                    }
+            }
+        });
+
+        birthday.textProperty().addListener((obs, oldValue, newValue) -> {
+            btn.setDisable(true);
+            try {
+                Integer.parseInt(idT.getText());
+                btn.setDisable(false);
+            } catch (Exception e) {
+                if (PatientEntry.isName(lastNameT.getText())
+                    && PatientEntry.isName(firstNameT.getText())
+                    && newValue != null
+                    && (PatientEntry.isPhoneNumber(landlineT.getText())
+                    || PatientEntry.isPhoneNumber(mobileT.getText()))) {
+                        btn.setDisable(false);
+                    }
+
+            }
+        });
+
+        landline.textProperty().addListener((obs, oldValue, newValue) -> {
+            btn.setDisable(true);
+            try {
+                Integer.parseInt(idT.getText());
+                btn.setDisable(false);
+            } catch (Exception e) {
+                if (PatientEntry.isName(lastNameT.getText())
+                    && PatientEntry.isName(firstNameT.getText())
+                    && birthdayT.getValue() != null
+                    && (PatientEntry.isPhoneNumber(newValue)
+                    || PatientEntry.isPhoneNumber(mobileT.getText()))) {
+                        btn.setDisable(false);
+                    }
+
+            }
+        });
+
+        mobile.textProperty().addListener((obs, oldValue, newValue) -> {
+            btn.setDisable(true);
+            try {
+                Integer.parseInt(idT.getText());
+                btn.setDisable(false);
+            } catch (Exception e) {
+                if (PatientEntry.isName(lastNameT.getText())
+                    && PatientEntry.isName(firstNameT.getText())
+                    && birthdayT.getValue() != null
+                    && (PatientEntry.isPhoneNumber(landlineT.getText())
+                    || PatientEntry.isPhoneNumber(newValue))) {
+                        btn.setDisable(false);
+                    }
+            }
+        });
+
+        dialog.getDialogPane().setContent(gridpane);
+
+        dialog.setResultConverter(okbutton -> {
+            if (okbutton == ButtonType.OK) {
+
+                int temp = 0;
+                try {
+                    temp = Integer.parseInt(idT.getText());
+                } catch (Exception e) {
+                }
+
+                PatientEntry p = new PatientEntry(temp,
+                    lastNameT.getText(), firstNameT.getText(),
+                    birthdayT.getValue(), additionalInfoT.getText(),
+                    landlineT.getText(), mobileT.getText(),
+                    null, false, null, null, false, null);
+
+                // check for duplicates
+                for (PatientEntry p1 : patients) {
+                    if (p1.equals(p)) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Fehler");
+                        alert.setHeaderText(
+                            "Identischen Patienteneintrag gefunden");
+
+                        alert.showAndWait();
+
+                        return null;
+                    }
+                }
+
+                return p;
+            }
+            return null;
+        });
+
+        Optional<PatientEntry> pFtr = dialog.showAndWait();
+
+        pFtr.ifPresent(p -> {
+            patients.add(p);
+        });
+
 
     }
 
@@ -493,14 +676,15 @@ public class MainSceneController implements Initializable {
 
         gridpane.add(startDate, 0, 0);
         gridpane.add(endDate, 1, 0);
+        gridpane.add(msg, 0, 1);
 
 
         Map<VaccineBrand, TextField> deliveries = new HashMap<>();
         for (VaccineBrand v : VaccineBrand.values()) {
-            gridpane.add(new Label(v.getValue()), 0, v.ordinal() + 1);
+            gridpane.add(new Label(v.getValue()), 0, v.ordinal() + 2);
             TextField temp = new TextField();
             deliveries.put(v, temp);
-            gridpane.add(temp, 1, v.ordinal() + 1);
+            gridpane.add(temp, 1, v.ordinal() + 2);
         }
 
         startDate.valueProperty().addListener(

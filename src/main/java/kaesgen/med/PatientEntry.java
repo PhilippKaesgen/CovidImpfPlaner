@@ -437,7 +437,13 @@ public class PatientEntry  implements Serializable {
      * a patient id or (first name, last name, birthdate and
      * (landline or mobile)) are given
     */
-    private boolean isPhoneNumber(final String n) {
+
+    /**
+     * Reports whether a given String is a phone number.
+     * @param n
+     * @return boolean
+     */
+    public static boolean isPhoneNumber(final String n) {
         if (n.length() < 10) {
             return false;
         }
@@ -472,7 +478,12 @@ public class PatientEntry  implements Serializable {
         return true;
     }
 
-    private boolean isName(final String name) {
+    /**
+     * Reports whether a given String is a name.
+     * @param name
+     * @return boolean
+     */
+    public static boolean isName(final String name) {
         for (char c : name.toCharArray()) {
             if (!Character.isAlphabetic(c) && !Character.isWhitespace(c)) {
                 return false;
@@ -482,8 +493,11 @@ public class PatientEntry  implements Serializable {
         return true;
     }
 
-
-    private boolean isPatientEntrySound() {
+    /**
+     * Reports whether the patient entry fields are conclusive.
+     * @return boolean
+     */
+    public final boolean isPatientEntrySound() {
 
         if (!isName(this.firstName)) {
             return false;
@@ -500,7 +514,11 @@ public class PatientEntry  implements Serializable {
         return true;
     }
 
-    public String toString() {
+    /**
+     * Returns the String representation of the patient.
+     * @return String
+     */
+    public final String toString() {
         return firstName + " " + lastName + " (Tel: " + landline + ", Mobil: "
             + mobile + "), Zusatzinformationen: " + additionalInfo;
     }

@@ -35,13 +35,9 @@ eingegeben werden).
 Zweitimpflingen bestimmen können.
 5. Aus der Rückmeldung der Apotheke über die tatsächlich lieferbaren Impfdosen
 die möglichen Erstimpflinge für einen wählbaren Zeitraum berechnen.
-
-## Funktionen in Arbeit
-
-Mit den Informationen im CovidImpfplaner soll dieses Programm demnächst:
-1. Eingabemaske für Patientendaten.
-2. "Wer kommt wann?" Heraussuchen der Patienten, die einen Termin in einem
-vom Benutzer festgelegten Zeitraum haben.
+6. Eingabemaske für Patientendaten.
+7. "Wer kommt wann?" Heraussuchen der Patienten, die einen Termin in einem
+vom Benutzer wählbaren Zeitraum haben.
 
 ## Anregungen und Support
 
