@@ -27,7 +27,7 @@ Folgende Funktionen werden geboten:
 Vor- und Nachname, Geburtsdatum, Telefonnummern, zusätzliches Informationsfeld
 für Priorisierung o.ä.
 ![](images/anmelden.gif)
-2. Impftermine vereinbaren.
+2. Impftermine vereinbaren und abhaken, wenn die Impfung vollzogen wurde.
 ![](images/termin.gif)
 3. Sortierung der Patienten nach verschiedenen Kriterien.
 ![](images/sortieren.gif)
