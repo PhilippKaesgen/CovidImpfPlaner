@@ -31,7 +31,9 @@ public enum VaccineBrand {
     /** Moderna. */
     Moderna("Moderna"),
     /** Novavax. */
-    Novavax("Novavax");
+    Novavax("Novavax"),
+    /** Sputnik. */
+    SputnikV("Sputnik V");
 
     /**
      * private field String.
