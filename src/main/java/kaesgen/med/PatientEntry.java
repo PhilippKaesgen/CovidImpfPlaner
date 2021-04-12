@@ -534,4 +534,15 @@ public class PatientEntry  implements Serializable {
             + mobile + "), Zusatzinformationen: " + additionalInfo;
     }
 
+    /**
+     * Determines whether this and another PatientEntry are equal.
+     * @param p2
+     * @return boolean
+     */
+    public final boolean equals(final PatientEntry p2) {
+        return this.firstName.equals(p2.getFirstName())
+            && this.lastName.equals(p2.getLastName())
+            && this.getBirthday().compareTo(p2.getBirthday()) == 0;
+    }
+
 }

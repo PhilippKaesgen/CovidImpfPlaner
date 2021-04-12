@@ -201,7 +201,6 @@ public class MainSceneController implements Initializable {
     private void createNewPatientClicked() {
         System.out.println("Registering patient");
 
-        changeMonitor = true;
 
         // open another view with textboxes
 
@@ -251,6 +250,7 @@ public class MainSceneController implements Initializable {
         // sanity check
         idT.textProperty().addListener((obs, newValue, oldValue) -> {
             btn.setDisable(true);
+            msg.setText("Ungültige Eingaben");
             try {
                 Integer.parseInt(newValue);
                 btn.setDisable(false);
@@ -262,6 +262,7 @@ public class MainSceneController implements Initializable {
                     && (PatientEntry.isPhoneNumber(landlineT.getText())
                     || PatientEntry.isPhoneNumber(mobileT.getText()))) {
                         btn.setDisable(false);
+                        msg.setText("");
                     }
 
             }
@@ -269,6 +270,7 @@ public class MainSceneController implements Initializable {
 
         firstNameT.textProperty().addListener((obs, newValue, oldValue) -> {
             btn.setDisable(true);
+            msg.setText("Ungültige Eingaben");
             try {
                 Integer.parseInt(idT.getText());
                 btn.setDisable(false);
@@ -280,6 +282,7 @@ public class MainSceneController implements Initializable {
                     && (PatientEntry.isPhoneNumber(landlineT.getText())
                     || PatientEntry.isPhoneNumber(mobileT.getText()))) {
                         btn.setDisable(false);
+                        msg.setText("");
                     }
 
             }
@@ -287,6 +290,7 @@ public class MainSceneController implements Initializable {
 
         lastNameT.textProperty().addListener((obs, oldValue, newValue) -> {
             btn.setDisable(true);
+            msg.setText("Ungültige Eingaben");
             try {
                 Integer.parseInt(idT.getText());
                 btn.setDisable(false);
@@ -298,12 +302,14 @@ public class MainSceneController implements Initializable {
                     && (PatientEntry.isPhoneNumber(landlineT.getText())
                     || PatientEntry.isPhoneNumber(mobileT.getText()))) {
                         btn.setDisable(false);
+                        msg.setText("");
                     }
             }
         });
 
         birthdayT.textProperty().addListener((obs, oldValue, newValue) -> {
             btn.setDisable(true);
+            msg.setText("Ungültige Eingaben");
             try {
                 Integer.parseInt(idT.getText());
                 btn.setDisable(false);
@@ -314,6 +320,7 @@ public class MainSceneController implements Initializable {
                     && (PatientEntry.isPhoneNumber(landlineT.getText())
                     || PatientEntry.isPhoneNumber(mobileT.getText()))) {
                         btn.setDisable(false);
+                        msg.setText("");
                     }
 
             }
@@ -321,6 +328,7 @@ public class MainSceneController implements Initializable {
 
         landlineT.textProperty().addListener((obs, oldValue, newValue) -> {
             btn.setDisable(true);
+            msg.setText("Ungültige Eingaben");
             try {
                 Integer.parseInt(idT.getText());
                 btn.setDisable(false);
@@ -332,6 +340,7 @@ public class MainSceneController implements Initializable {
                     && (PatientEntry.isPhoneNumber(newValue)
                     || PatientEntry.isPhoneNumber(mobileT.getText()))) {
                         btn.setDisable(false);
+                        msg.setText("");
                     }
 
             }
@@ -339,6 +348,7 @@ public class MainSceneController implements Initializable {
 
         mobileT.textProperty().addListener((obs, oldValue, newValue) -> {
             btn.setDisable(true);
+            msg.setText("Ungültige Eingaben");
             try {
                 Integer.parseInt(idT.getText());
                 btn.setDisable(false);
@@ -350,6 +360,7 @@ public class MainSceneController implements Initializable {
                     && (PatientEntry.isPhoneNumber(landlineT.getText())
                     || PatientEntry.isPhoneNumber(newValue))) {
                         btn.setDisable(false);
+                        msg.setText("");
                     }
             }
         });
@@ -396,6 +407,7 @@ public class MainSceneController implements Initializable {
         pFtr.ifPresent(p -> {
             if (p != null) {
                 patients.add(p);
+                changeMonitor = true;
             }
         });
 
@@ -503,7 +515,7 @@ public class MainSceneController implements Initializable {
                 List<PatientEntry> temp = getScheduledPatients.get();
 
                 patients.removeAll(temp);
-                patients.addAll(0,temp);
+                patients.addAll(0, temp);
                 Alert orderList = new Alert(Alert.AlertType.INFORMATION);
                 orderList.setTitle("Patientenliste");
                 orderList.setContentText(temp.size() + " Patienten mit "
