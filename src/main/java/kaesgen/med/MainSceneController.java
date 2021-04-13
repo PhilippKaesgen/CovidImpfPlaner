@@ -1093,6 +1093,13 @@ public class MainSceneController implements Initializable {
             .setCellValueFactory(new PropertyValueFactory<>("birthday"));
         birthday
             .setCellFactory(TextFieldTableCell.<PatientEntry>forTableColumn());
+        birthday.setComparator((a, b) -> {
+
+            LocalDate t1 = LocalDate.parse(a, PatientEntry.DATE_FORMATTER);
+            LocalDate t2 = LocalDate.parse(b, PatientEntry.DATE_FORMATTER);
+
+            return t1.compareTo(t2);
+        });
         additionalInfo
             .setCellValueFactory(new PropertyValueFactory<>("additionalInfo"));
         additionalInfo

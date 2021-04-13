@@ -47,7 +47,7 @@ public enum VaccineBrand {
     /** Convidecia. */
     Convidecia("Convidecia"),
     /** SOBERANA. 02 */
-    SOBERANA02(" SOBERANA 02"),
+    SOBERANA02("SOBERANA 02"),
     /** WIBP-CorV. */
     WIBPCorV("WIBP-CorV"),
     /** CoviVac. */
