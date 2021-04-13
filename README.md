@@ -45,6 +45,41 @@ wird vom Benutzer beim Speichern festgelegt und muss zum Öffnen erneut
 eingegeben werden).
 ![](images/speichern.gif)
 
+## FAQ
+
+### Warum wird der Impftermin nicht richtig gespeichert?
+Beim Eintragen von Terminen geht das Programm davon aus, dass zuerst Impfdatum
+und Impfstoff gewählt werden und dann erst der Haken gesetzt wird. Der Haken
+bei jeder Impfung kann umgekehrt auch nur dann abgespeichert werden, wenn zuvor
+Impfdatum und Impfstoff angegeben wurden. Der Haken beim zweiten Impftermin
+wird auch nur dann gespeichert, wenn die erste Impfung gültig abgehakt wurde.
+Dieser Mechanismus dient zur
+Sicherstellung, dass nicht aus Versehen unlogische Angaben gemacht werden.
+
+### Woher bekomme ich das Passwort zum Speichern?
+Das Passwort wird vom Benutzer, d.h. der Arztpraxis, festgelegt. Es muss beim Speichern zur
+Vermeidung von Tippfehlern bei der Eingabe zweimal eingegeben werden. Dasselbe
+Passwort muss zum Öffnen der Datei eingegeben werden. Das Passwort darf nicht
+an Dritte weitergegeben werden.
+
+### Muss immer dasselbe Passwort zum Speichern derselben Datei eingegeben werden?
+Nein. Bei jedem Speichervorgang kann ein neues Passwort festgelegt werden.
+
+### Ein Patient hat abgesagt und wurde aus der Liste gelöscht. Nun möchte er doch wieder geimpft werden. Kann er auf den alten Listenplatz zurück?
+Nein.
+
+### Der OK-Knopf in der Eingabemaske für neue Patienten ist ausgegraut?
+Ein Patienteneintrag ist nur dann gültig, wenn entweder die praxisinterne
+Patientennummer angegeben wird, oder Nach- und Vorname sowie Geburtsdatum und
+mindestens eine Telefonnummer angegeben wurde. Dieser Mechanismus stellt sicher,
+dass nur eindeutig identifizierbare Patienten in die Liste aufgenommen werden.
+
+### Beim Berechnen der übrigen Impfstoffe werden negative Zahlen angezeigt?
+In diesem Fall wird weniger Impfstoff von der Apotheke geliefert als für die
+Zweitimpfungen im angegebenen Zeitraum benötigt werden. Entweder muss bei der
+Apotheke noch einmal so viel Impfstoff nachgefragt werden, dass die Differenz
+ausgeglichen wird, oder Termine für Zweitimpfungen verschoben werden.
+
 ## Anregungen und Support
 
 Für Anregungen zur Verbesserung des Programms bin ich offen!
