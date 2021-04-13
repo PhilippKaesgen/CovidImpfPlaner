@@ -88,6 +88,10 @@ Der CovidImpfPlaner ist ein Java-Programm, d.h. es funktioniert mit
 **Windows**, **Linux** und **MacOS**. Support-Anfragen gerne hier:
 pkaesgen(AT)freenet.de
 
+## Unterstützung des Projektes
+
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://paypal.me/pkaesgen)
+
 ## Lizenz
 
 CovidImpfPlaner  Copyright (C) 2021  Philipp Käsgen
