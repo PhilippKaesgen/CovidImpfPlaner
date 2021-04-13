@@ -1104,12 +1104,15 @@ public class MainSceneController implements Initializable {
             .setCellValueFactory(new PropertyValueFactory<>("additionalInfo"));
         additionalInfo
             .setCellFactory(TextFieldTableCell.<PatientEntry>forTableColumn());
+        additionalInfo.setSortable(false);
         landline.setCellValueFactory(new PropertyValueFactory<>("landline"));
         landline
         .setCellFactory(TextFieldTableCell.<PatientEntry>forTableColumn());
+        landline.setSortable(false);
         mobile.setCellValueFactory(new PropertyValueFactory<>("mobile"));
         mobile
         .setCellFactory(TextFieldTableCell.<PatientEntry>forTableColumn());
+        mobile.setSortable(false);
 
         firstVaccinationDone
             .setCellValueFactory(
