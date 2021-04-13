@@ -70,9 +70,9 @@
             <TableColumn fx:id="lastName" prefWidth="152.0" text="Nachname" />
             <TableColumn fx:id="firstName" prefWidth="143.0" text="Vorname" />
             <TableColumn fx:id="birthday" prefWidth="134.0" text="Geburtstag" />
-            <TableColumn fx:id="additionalInfo" prefWidth="134.0" text="Zusatzinfo" />
-            <TableColumn fx:id="landline" prefWidth="122.0" text="Festnetz" />
-            <TableColumn fx:id="mobile" minWidth="9.0" prefWidth="127.0" text="Mobiltelefon" />
+            <TableColumn fx:id="additionalInfo" prefWidth="134.0" text="Zusatzinfo" sortable="false"/>
+            <TableColumn fx:id="landline" prefWidth="122.0" text="Festnetz" sortable="false"/>
+            <TableColumn fx:id="mobile" minWidth="9.0" prefWidth="127.0" text="Mobiltelefon" sortable="false" />
             <TableColumn minWidth="2.0" prefWidth="307.0" text="1. Impfung">
                <columns>
                   <TableColumn fx:id="firstVaccinationDate" prefWidth="136.0" text="Termin" />
