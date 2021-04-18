@@ -1094,10 +1094,6 @@ public class MainSceneController implements Initializable {
 
         changeMonitor = false;
 
-        TableViewSelectionModel<PatientEntry> selectionModel =
-            table1.getSelectionModel();
-        selectionModel.setSelectionMode(SelectionMode.SINGLE);
-
         registrationDate
             .setCellValueFactory(
             new PropertyValueFactory<>("registrationDate"));
@@ -1159,9 +1155,12 @@ public class MainSceneController implements Initializable {
                         new DateTableCell<PatientEntry>(tc);
 
                     cell.valueProperty()
-                        .addListener((obs, oldValue, newValue) ->
+                        .addListener((obs, oldValue, newValue) -> {
                         ((PatientEntry) cell.getTableRow().getItem())
-                            .setFirstVaccinationDate(newValue));
+                            .setFirstVaccinationDate(newValue);
+
+                        changeMonitor = true;
+                        });
 
                     return cell;
                 });
@@ -1187,13 +1186,24 @@ public class MainSceneController implements Initializable {
                                 checkBox.setSelected(item);
                                 setGraphic(checkBox);
                             }
+
                         }
                     };
 
                     checkBox.selectedProperty()
-                        .addListener((obs, wasSelected, isSelected) ->
-                        ((PatientEntry) cell.getTableRow().getItem())
-                            .setFirstVaccinationDone(isSelected));
+                        .addListener((obs, wasSelected, isSelected) -> {
+                            TableRow<PatientEntry> r = cell.getTableRow();
+                            PatientEntry pat = (PatientEntry) r.getItem();
+                            pat.setFirstVaccinationDone(isSelected);
+                            if (isSelected) {
+                                r.setStyle("-fx-background-color:orange");
+                            }
+                            else {
+                                r.setStyle("-fx-background-color:white");
+                            }
+                            changeMonitor = wasSelected != isSelected;;
+                        });
+                            
 
                     cell.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 
@@ -1216,9 +1226,12 @@ public class MainSceneController implements Initializable {
                     DateTableCell<PatientEntry> cell =
                     new DateTableCell<PatientEntry>(tc);
                     cell.valueProperty()
-                        .addListener((obs, oldValue, newValue) ->
+                        .addListener((obs, oldValue, newValue) -> {
                             ((PatientEntry) cell.getTableRow().getItem())
-                                .setSecondVaccinationDate(newValue));
+                                .setSecondVaccinationDate(newValue);
+                        
+                        changeMonitor = true;
+                    });
 
                     return cell;
                 });
@@ -1246,14 +1259,25 @@ public class MainSceneController implements Initializable {
                             } else {
                                 checkBox.setSelected(item);
                                 setGraphic(checkBox);
+                                
                             }
+
                         }
                     };
 
                     checkBox.selectedProperty()
-                        .addListener((obs, wasSelected, isSelected) ->
-                        ((PatientEntry) cell.getTableRow().getItem())
-                            .setSecondVaccinationDone(isSelected));
+                        .addListener((obs, wasSelected, isSelected) -> {
+                        TableRow<PatientEntry> r = cell.getTableRow();
+                        PatientEntry pat = (PatientEntry) r.getItem();
+                        pat.setSecondVaccinationDone(isSelected);
+                        if (isSelected && pat.isFirstVaccinationDone()){
+                            r.setStyle("-fx-background-color:green");
+                        }
+                        else {
+                            r.setStyle("-fx-background-color:orange");
+                        }
+                        changeMonitor = wasSelected != isSelected;
+                    });
 
                     cell.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 
@@ -1350,6 +1374,10 @@ public class MainSceneController implements Initializable {
                 return null;
             }
         }).start();
+
+        TableViewSelectionModel<PatientEntry> selectionModel =
+            table1.getSelectionModel();
+        selectionModel.setSelectionMode(SelectionMode.SINGLE);
 
         // #####################################################################
         // Context Menu
