@@ -450,7 +450,7 @@ public class MainSceneController implements Initializable {
 
             btn.setDisable(true);
             msg.setText("");
-            if (endDate != null && newValue != null
+            if (endDate.getValue() != null && newValue != null
                 && newValue.compareTo(endDate.getValue()) > 0) {
                 msg.setText(
                     "Startdatum darf nicht nach dem Enddatum liegen.");
@@ -465,7 +465,7 @@ public class MainSceneController implements Initializable {
 
             btn.setDisable(true);
             msg.setText("");
-            if (startDate != null && newValue != null
+            if (startDate.getValue() != null && newValue != null
                 && startDate.getValue().compareTo(newValue) > 0) {
                 msg.setText(
                     "Enddatum darf nicht vor dem Startdatum liegen.");
@@ -497,9 +497,11 @@ public class MainSceneController implements Initializable {
                 protected List<PatientEntry> call() throws Exception {
                     List<PatientEntry> scheduledPatients = new ArrayList<>();
                     for (PatientEntry p : patients) {
-                        if (p.getFirstVaccinationDate().compareTo(start) >= 0
+                        if (p.getFirstVaccinationDate() != null
+                        && p.getFirstVaccinationDate().compareTo(start) >= 0
                         && p.getFirstVaccinationDate().compareTo(end) <= 0
-                        || p.getSecondVaccinationDate().compareTo(start) >= 0
+                        || p.getSecondVaccinationDate() != null 
+                        && p.getSecondVaccinationDate().compareTo(start) >= 0
                         && p.getSecondVaccinationDate().compareTo(end) <= 0) {
 
                             scheduledPatients.add(p);
@@ -518,6 +520,7 @@ public class MainSceneController implements Initializable {
                 patients.addAll(0, temp);
                 Alert orderList = new Alert(Alert.AlertType.INFORMATION);
                 orderList.setTitle("Patientenliste");
+                orderList.setHeaderText("Zeitraum: " + start + " bis " + end);
                 orderList.setContentText(temp.size() + " Patienten mit "
                 + "Impftermin im genannten Zeitraum wurden an den Anfang "
                 + "der Tabelle geschoben.");
@@ -567,7 +570,7 @@ public class MainSceneController implements Initializable {
 
             btn.setDisable(true);
             msg.setText("");
-            if (endDate != null && newValue != null
+            if (endDate.getValue() != null && newValue != null
                 && newValue.compareTo(endDate.getValue()) > 0) {
                 msg.setText(
                     "Startdatum darf nicht nach dem Enddatum liegen.");
@@ -582,7 +585,7 @@ public class MainSceneController implements Initializable {
 
             btn.setDisable(true);
             msg.setText("");
-            if (startDate != null && newValue != null
+            if (startDate.getValue() != null && newValue != null
                 && startDate.getValue().compareTo(newValue) > 0) {
                 msg.setText(
                     "Enddatum darf nicht vor dem Startdatum liegen.");
@@ -702,7 +705,7 @@ public class MainSceneController implements Initializable {
 
             btn.setDisable(true);
             msg.setText("");
-            if (endDate != null && newValue != null
+            if (endDate.getValue() != null && newValue != null
                 && newValue.compareTo(endDate.getValue()) > 0) {
                 msg.setText(
                     "Startdatum darf nicht nach dem Enddatum liegen.");
@@ -717,7 +720,7 @@ public class MainSceneController implements Initializable {
 
             btn.setDisable(true);
             msg.setText("");
-            if (startDate != null && newValue != null
+            if (startDate.getValue() != null && newValue != null
                 && startDate.getValue().compareTo(newValue) > 0) {
                 msg.setText(
                     "Enddatum darf nicht vor dem Startdatum liegen.");
