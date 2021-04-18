@@ -515,13 +515,19 @@ public class MainSceneController implements Initializable {
                         if (p.getFirstVaccinationDate() != null
                         && p.getFirstVaccinationDate().compareTo(start) >= 0
                         && p.getFirstVaccinationDate().compareTo(end) <= 0) {
-                            vaccineCounters.put(p.getFirstVaccine().getValue(), vaccineCounters.get(p.getFirstVaccine().getValue()) +1); 
+                            vaccineCounters.put(p.getFirstVaccine()
+                                .getValue(),
+                                vaccineCounters.get(p.getFirstVaccine()
+                                .getValue()) + 1); 
                         }
 
                         if (p.getSecondVaccinationDate() != null 
                         && p.getSecondVaccinationDate().compareTo(start) >= 0
                         && p.getSecondVaccinationDate().compareTo(end) <= 0) {
-                            vaccineCounters.put(p.getSecondVaccine().getValue(), vaccineCounters.get(p.getSecondVaccine().getValue()) +1);
+                            vaccineCounters.put(p.getSecondVaccine()
+                                .getValue(),
+                                vaccineCounters.get(p.getSecondVaccine()
+                                .getValue()) + 1);
                         }
                     }
                     return new Pair<>(scheduledPatients, vaccineCounters);
@@ -531,7 +537,8 @@ public class MainSceneController implements Initializable {
             new Thread(getScheduledPatients).start();
 
             try {
-                Pair<List<PatientEntry>, Map<String, Integer>> temp = getScheduledPatients.get();
+                Pair<List<PatientEntry>, Map<String, Integer>> temp = 
+                    getScheduledPatients.get();
                 List<PatientEntry> list = temp.getKey();
                 Map<String, Integer> vaccines = temp.getValue();
 
@@ -1197,8 +1204,7 @@ public class MainSceneController implements Initializable {
                             pat.setFirstVaccinationDone(isSelected);
                             if (isSelected) {
                                 r.setStyle("-fx-background-color:orange");
-                            }
-                            else {
+                            } else {
                                 r.setStyle("-fx-background-color:white");
                             }
                             changeMonitor = wasSelected != isSelected;;
@@ -1270,10 +1276,9 @@ public class MainSceneController implements Initializable {
                         TableRow<PatientEntry> r = cell.getTableRow();
                         PatientEntry pat = (PatientEntry) r.getItem();
                         pat.setSecondVaccinationDone(isSelected);
-                        if (isSelected && pat.isFirstVaccinationDone()){
+                        if (isSelected && pat.isFirstVaccinationDone()) {
                             r.setStyle("-fx-background-color:green");
-                        }
-                        else {
+                        } else {
                             r.setStyle("-fx-background-color:orange");
                         }
                         changeMonitor = wasSelected != isSelected;
