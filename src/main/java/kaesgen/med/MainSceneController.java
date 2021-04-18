@@ -492,10 +492,15 @@ public class MainSceneController implements Initializable {
             LocalDate start = dates.getKey();
             LocalDate end = dates.getValue();
 
-            Task<List<PatientEntry>> getScheduledPatients =  new Task<>() {
+            Task<Pair<List<PatientEntry>, Map<String, Integer>>> getScheduledPatients =  new Task<>() {
                 @Override
-                protected List<PatientEntry> call() throws Exception {
+                protected Pair<List<PatientEntry>, Map<String, Integer>> call() throws Exception {
                     List<PatientEntry> scheduledPatients = new ArrayList<>();
+                    Map<String, Integer> vaccineCounters = new HashMap<>();
+                    for (VaccineBrand v : VaccineBrand.values()) {
+                        vaccineCounters.put(v.getValue(), 0);
+                    }
+
                     for (PatientEntry p : patients) {
                         if (p.getFirstVaccinationDate() != null
                         && p.getFirstVaccinationDate().compareTo(start) >= 0
@@ -506,24 +511,46 @@ public class MainSceneController implements Initializable {
 
                             scheduledPatients.add(p);
                         }
+
+                        if (p.getFirstVaccinationDate() != null
+                        && p.getFirstVaccinationDate().compareTo(start) >= 0
+                        && p.getFirstVaccinationDate().compareTo(end) <= 0) {
+                            vaccineCounters.put(p.getFirstVaccine().getValue(), vaccineCounters.get(p.getFirstVaccine().getValue()) +1); 
+                        }
+
+                        if (p.getSecondVaccinationDate() != null 
+                        && p.getSecondVaccinationDate().compareTo(start) >= 0
+                        && p.getSecondVaccinationDate().compareTo(end) <= 0) {
+                            vaccineCounters.put(p.getSecondVaccine().getValue(), vaccineCounters.get(p.getSecondVaccine().getValue()) +1);
+                        }
                     }
-                    return scheduledPatients;
+                    return new Pair<>(scheduledPatients, vaccineCounters);
                 }
             };
 
             new Thread(getScheduledPatients).start();
 
             try {
-                List<PatientEntry> temp = getScheduledPatients.get();
+                Pair<List<PatientEntry>, Map<String, Integer>> temp = getScheduledPatients.get();
+                List<PatientEntry> list = temp.getKey();
+                Map<String, Integer> vaccines = temp.getValue();
 
-                patients.removeAll(temp);
-                patients.addAll(0, temp);
+                patients.removeAll(list);
+                patients.addAll(0, list);
                 Alert orderList = new Alert(Alert.AlertType.INFORMATION);
                 orderList.setTitle("Patientenliste");
                 orderList.setHeaderText("Zeitraum: " + start + " bis " + end);
-                orderList.setContentText(temp.size() + " Patienten mit "
-                + "Impftermin im genannten Zeitraum wurden an den Anfang "
-                + "der Tabelle geschoben.");
+                //orderList.setContentText(
+                String content = list.size() + " Patienten haben einen Termin "
+                + "und wurden an den Anfang der Tabelle geschoben.\n\n"
+                + "Folgende Impfstoffe werden benötigt:\n\n";
+                for (String vn : vaccines.keySet()) {
+                    if (vaccines.get(vn) > 0) {
+                        content += vn + ": " + vaccines.get(vn) + "\n";
+                    }
+                }
+
+                orderList.setContentText(content);
                 orderList.showAndWait();
             } catch (Exception e) {
             }
