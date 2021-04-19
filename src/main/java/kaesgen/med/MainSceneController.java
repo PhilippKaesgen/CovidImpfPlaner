@@ -271,7 +271,7 @@ public class MainSceneController implements Initializable {
                 Integer.parseInt(newValue);
                 idvalid = true;
             } catch (Exception e) {
-                idvalid = false;
+                idvalid = newValue.equals("");
             }
 
             if (idvalid
@@ -294,7 +294,7 @@ public class MainSceneController implements Initializable {
                 Integer.parseInt(idT.getText());
                 idvalid = true;
             } catch (Exception e) {
-                idvalid = false;
+                idvalid = idT.getText().equals("");
             }
 
             if (idvalid
@@ -317,7 +317,7 @@ public class MainSceneController implements Initializable {
                 Integer.parseInt(idT.getText());
                 idvalid = true;
             } catch (Exception e) {
-                idvalid = false;
+                idvalid = idT.getText().equals("");
             }
 
             if (idvalid
@@ -341,7 +341,7 @@ public class MainSceneController implements Initializable {
                 Integer.parseInt(idT.getText());
                 idvalid = true;
             } catch (Exception e) {
-                idvalid = false;
+                idvalid = idT.getText().equals("");
             }
 
             if (idvalid
@@ -365,7 +365,7 @@ public class MainSceneController implements Initializable {
                 Integer.parseInt(idT.getText());
                 idvalid = true;
             } catch (Exception e) {
-                idvalid = false;
+                idvalid = idT.getText().equals("");
             }
 
             if (idvalid
@@ -390,7 +390,7 @@ public class MainSceneController implements Initializable {
                 Integer.parseInt(idT.getText());
                 idvalid = true;
             } catch (Exception e) {
-                idvalid = false;
+                idvalid = idT.getText().equals("");
             }
 
             if (idvalid
