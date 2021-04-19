@@ -455,6 +455,9 @@ public class PatientEntry  implements Serializable {
      * @return boolean
      */
     public static boolean isPhoneNumber(final String n) {
+
+        char separator = '-';
+
         if (n.length() < 10) {
             return false;
         }
@@ -471,12 +474,12 @@ public class PatientEntry  implements Serializable {
             return false;
         }
 
-        if (!Character.isDigit(nArr[4]) && nArr[4] != '/') {
+        if (!Character.isDigit(nArr[4]) && nArr[4] != separator) {
             return false;
         }
 
-        if (Character.isDigit(nArr[4]) && nArr[5] != '/'
-            || nArr[4] == '/' && !Character.isDigit(nArr[5])) {
+        if (Character.isDigit(nArr[4]) && nArr[5] != separator
+            || nArr[4] == separator && !Character.isDigit(nArr[5])) {
             return false;
         }
 
