@@ -91,8 +91,10 @@ import net.rgielen.fxweaver.core.FxmlView;
 @FxmlView("CovidImpfPlanerView.fxml")
 public class MainSceneController implements Initializable {
 
+    /** remembers last save directory. */
     private final String lastSaveDir = "lastSaveDir.txt";
 
+    /** file extension for encrypted files. */
     private final String fileExtension = "*.ulf";
 
     /**
@@ -154,6 +156,7 @@ public class MainSceneController implements Initializable {
     @FXML
     private MenuItem loadFile;
 
+    /** print table dialog. */
     @FXML
     private MenuItem printTable;
 
@@ -161,6 +164,7 @@ public class MainSceneController implements Initializable {
     @FXML
     private MenuItem aboutBtn;
 
+    /** index display of selected patient entry. */
     @FXML
     private Label patientCounterDisplay;
 
@@ -338,7 +342,6 @@ public class MainSceneController implements Initializable {
                         btn.setDisable(false);
                         msg.setText("");
                     }
-            
         });
 
         birthdayT.textProperty().addListener((obs, oldValue, newValue) -> {
@@ -361,8 +364,6 @@ public class MainSceneController implements Initializable {
                         btn.setDisable(false);
                         msg.setText("");
                     }
-
-            
         });
 
         landlineT.textProperty().addListener((obs, oldValue, newValue) -> {
@@ -386,8 +387,6 @@ public class MainSceneController implements Initializable {
                         btn.setDisable(false);
                         msg.setText("");
                     }
-
-            
         });
 
         mobileT.textProperty().addListener((obs, oldValue, newValue) -> {
@@ -411,7 +410,7 @@ public class MainSceneController implements Initializable {
                         btn.setDisable(false);
                         msg.setText("");
                     }
-            
+
         });
 
         dialog.getDialogPane().setContent(gridpane);
@@ -539,17 +538,17 @@ public class MainSceneController implements Initializable {
 
         datesFtr.ifPresent(dates -> {
             LocalDate start = dates.getKey();
-            LocalDate end = dates.getValue();Task<List<PatientEntry>> getScheduledPatients =  new Task<>() {
+            LocalDate end = dates.getValue();
+            Task<List<PatientEntry>> getScheduledPatients =  new Task<>() {
                 @Override
                 protected List<PatientEntry> call() throws Exception {
                     List<PatientEntry> scheduledPatients = new ArrayList<>();
-                    
 
                     for (PatientEntry p : patients) {
                         if (p.getFirstVaccinationDate() != null
                         && p.getFirstVaccinationDate().compareTo(start) >= 0
                         && p.getFirstVaccinationDate().compareTo(end) <= 0
-                        || p.getSecondVaccinationDate() != null 
+                        || p.getSecondVaccinationDate() != null
                         && p.getSecondVaccinationDate().compareTo(start) >= 0
                         && p.getSecondVaccinationDate().compareTo(end) <= 0) {
 
@@ -584,7 +583,8 @@ public class MainSceneController implements Initializable {
 
                 try {
                     printNode((Node) table1);
-                } catch (NoSuchMethodException | InstantiationException | IllegalAccessException
+                } catch (NoSuchMethodException | InstantiationException
+                | IllegalAccessException
                         | InvocationTargetException e) {
                     e.printStackTrace();
                 }
@@ -600,7 +600,7 @@ public class MainSceneController implements Initializable {
 
 
     /**
-     * As from here:
+     * As from here.
      * https://stackoverflow.com/questions/31231021/javafx8-print-api-how-to-set-correctly-the-printable-area/31232149#31232149
      * @param node
      * @throws NoSuchMethodException
@@ -608,28 +608,33 @@ public class MainSceneController implements Initializable {
      * @throws IllegalAccessException
      * @throws InvocationTargetException
      */
-    private void printNode(final Node node) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
-       
+    private void printNode(final Node node)
+    throws NoSuchMethodException, InstantiationException,
+    IllegalAccessException, InvocationTargetException {
+
         Printer printer = Printer.getDefaultPrinter();
-        
+
         PageLayout pageLayout
-            = printer.createPageLayout(Paper.A4, PageOrientation.PORTRAIT, Printer.MarginType.HARDWARE_MINIMUM);
-        
+            = printer.createPageLayout(Paper.A4, PageOrientation.PORTRAIT,
+            Printer.MarginType.HARDWARE_MINIMUM);
+
         PrinterJob job = PrinterJob.createPrinterJob();
-        
+
         double scaleX
-            = pageLayout.getPrintableWidth() / node.getBoundsInParent().getWidth();
+            = pageLayout.getPrintableWidth() / node.getBoundsInParent()
+            .getWidth();
         double scaleY
-            = pageLayout.getPrintableHeight() / node.getBoundsInParent().getHeight();
+            = pageLayout.getPrintableHeight() / node.getBoundsInParent()
+            .getHeight();
         Scale scale = new Scale(scaleX, scaleY);
-        
+
         node.getTransforms().add(scale);
-    
+
         if (job != null && job.showPrintDialog(node.getScene().getWindow())) {
           boolean success = job.printPage(pageLayout, node);
           if (success) {
             job.endJob();
-    
+
           }
         }
         node.getTransforms().remove(scale);
@@ -713,9 +718,11 @@ public class MainSceneController implements Initializable {
             LocalDate start = dates.getKey();
             LocalDate end = dates.getValue();
 
-            Task<Pair<List<PatientEntry>, Map<String, Integer>>> getScheduledPatients =  new Task<>() {
+            Task<Pair<List<PatientEntry>, Map<String, Integer>>> getScheduledPatients =
+            new Task<>() {
                 @Override
-                protected Pair<List<PatientEntry>, Map<String, Integer>> call() throws Exception {
+                protected Pair<List<PatientEntry>, Map<String, Integer>> call()
+                    throws Exception {
                     List<PatientEntry> scheduledPatients = new ArrayList<>();
                     Map<String, Integer> vaccineCounters = new HashMap<>();
                     for (VaccineBrand v : VaccineBrand.values()) {
@@ -726,7 +733,7 @@ public class MainSceneController implements Initializable {
                         if (p.getFirstVaccinationDate() != null
                         && p.getFirstVaccinationDate().compareTo(start) >= 0
                         && p.getFirstVaccinationDate().compareTo(end) <= 0
-                        || p.getSecondVaccinationDate() != null 
+                        || p.getSecondVaccinationDate() != null
                         && p.getSecondVaccinationDate().compareTo(start) >= 0
                         && p.getSecondVaccinationDate().compareTo(end) <= 0) {
 
@@ -739,10 +746,10 @@ public class MainSceneController implements Initializable {
                             vaccineCounters.put(p.getFirstVaccine()
                                 .getValue(),
                                 vaccineCounters.get(p.getFirstVaccine()
-                                .getValue()) + 1); 
+                                .getValue()) + 1);
                         }
 
-                        if (p.getSecondVaccinationDate() != null 
+                        if (p.getSecondVaccinationDate() != null
                         && p.getSecondVaccinationDate().compareTo(start) >= 0
                         && p.getSecondVaccinationDate().compareTo(end) <= 0) {
                             vaccineCounters.put(p.getSecondVaccine()
@@ -758,7 +765,7 @@ public class MainSceneController implements Initializable {
             new Thread(getScheduledPatients).start();
 
             try {
-                Pair<List<PatientEntry>, Map<String, Integer>> temp = 
+                Pair<List<PatientEntry>, Map<String, Integer>> temp =
                     getScheduledPatients.get();
                 List<PatientEntry> list = temp.getKey();
                 Map<String, Integer> vaccines = temp.getValue();
@@ -1173,7 +1180,8 @@ public class MainSceneController implements Initializable {
                 String partentPath = file.getParent();
 
                 try {
-                    FileOutputStream saveParentDir = new FileOutputStream(lastSaveDir, false);
+                    FileOutputStream saveParentDir =
+                        new FileOutputStream(lastSaveDir, false);
 
                     saveParentDir.write(partentPath.getBytes());
 
@@ -1464,9 +1472,9 @@ public class MainSceneController implements Initializable {
                             } else {
                                 r.setStyle("");
                             }
-                            changeMonitor = wasSelected != isSelected;;
+                            changeMonitor = wasSelected != isSelected;
                         });
-                            
+
 
                     cell.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 
@@ -1492,7 +1500,7 @@ public class MainSceneController implements Initializable {
                         .addListener((obs, oldValue, newValue) -> {
                             ((PatientEntry) cell.getTableRow().getItem())
                                 .setSecondVaccinationDate(newValue);
-                        
+
                         changeMonitor = true;
                     });
 
@@ -1522,7 +1530,7 @@ public class MainSceneController implements Initializable {
                             } else {
                                 checkBox.setSelected(item);
                                 setGraphic(checkBox);
-                                
+
                             }
 
                         }
