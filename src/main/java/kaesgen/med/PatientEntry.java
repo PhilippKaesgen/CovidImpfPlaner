@@ -495,6 +495,9 @@ public class PatientEntry  implements Serializable {
      * @return boolean
      */
     public static boolean isName(final String name) {
+        if (name.equals("")) {
+            return false;
+        }
         for (char c : name.toCharArray()) {
             if (!Character.isAlphabetic(c) && !Character.isWhitespace(c)) {
                 return false;

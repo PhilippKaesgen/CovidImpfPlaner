@@ -23,7 +23,6 @@ package kaesgen.med;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -76,8 +75,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Stage;
 import javafx.util.Pair;
 import net.rgielen.fxweaver.core.FxmlView;
 
@@ -262,51 +261,62 @@ public class MainSceneController implements Initializable {
         idT.textProperty().addListener((obs, newValue, oldValue) -> {
             btn.setDisable(true);
             msg.setText("Ungültige Eingaben");
+            boolean idvalid = false;
             try {
                 Integer.parseInt(newValue);
-                btn.setDisable(false);
+                idvalid = true;
             } catch (Exception e) {
-                if (PatientEntry.isName(firstNameT.getText())
-                    && PatientEntry.isName(lastNameT.getText())
-                    && (new LocalDateConverter())
-                        .fromString(birthdayT.getText()) != null
-                    && (PatientEntry.isPhoneNumber(landlineT.getText())
-                    || PatientEntry.isPhoneNumber(mobileT.getText()))) {
-                        btn.setDisable(false);
-                        msg.setText("");
-                    }
+                idvalid = false;
+            }
 
+            if (idvalid
+            && PatientEntry.isName(firstNameT.getText())
+            && PatientEntry.isName(lastNameT.getText())
+            && (new LocalDateConverter())
+                .fromString(birthdayT.getText()) != null
+            && (PatientEntry.isPhoneNumber(landlineT.getText())
+            || PatientEntry.isPhoneNumber(mobileT.getText()))) {
+                btn.setDisable(false);
+                msg.setText("");
             }
         });
 
         firstNameT.textProperty().addListener((obs, newValue, oldValue) -> {
             btn.setDisable(true);
             msg.setText("Ungültige Eingaben");
+            boolean idvalid = false;
             try {
                 Integer.parseInt(idT.getText());
-                btn.setDisable(false);
+                idvalid = true;
             } catch (Exception e) {
-                if (PatientEntry.isName(newValue)
-                    && PatientEntry.isName(lastNameT.getText())
-                    && (new LocalDateConverter())
-                        .fromString(birthdayT.getText()) != null
-                    && (PatientEntry.isPhoneNumber(landlineT.getText())
-                    || PatientEntry.isPhoneNumber(mobileT.getText()))) {
-                        btn.setDisable(false);
-                        msg.setText("");
-                    }
+                idvalid = false;
+            }
 
+            if (idvalid
+            && PatientEntry.isName(newValue)
+            && PatientEntry.isName(lastNameT.getText())
+            && (new LocalDateConverter())
+                .fromString(birthdayT.getText()) != null
+            && (PatientEntry.isPhoneNumber(landlineT.getText())
+            || PatientEntry.isPhoneNumber(mobileT.getText()))) {
+                btn.setDisable(false);
+                msg.setText("");
             }
         });
 
         lastNameT.textProperty().addListener((obs, oldValue, newValue) -> {
             btn.setDisable(true);
             msg.setText("Ungültige Eingaben");
+            boolean idvalid = false;
             try {
                 Integer.parseInt(idT.getText());
-                btn.setDisable(false);
+                idvalid = true;
             } catch (Exception e) {
-                if (PatientEntry.isName(newValue)
+                idvalid = false;
+            }
+
+            if (idvalid
+            && PatientEntry.isName(newValue)
                     && PatientEntry.isName(firstNameT.getText())
                     && (new LocalDateConverter())
                         .fromString(birthdayT.getText()) != null
@@ -315,17 +325,22 @@ public class MainSceneController implements Initializable {
                         btn.setDisable(false);
                         msg.setText("");
                     }
-            }
+            
         });
 
         birthdayT.textProperty().addListener((obs, oldValue, newValue) -> {
             btn.setDisable(true);
             msg.setText("Ungültige Eingaben");
+            boolean idvalid = false;
             try {
                 Integer.parseInt(idT.getText());
-                btn.setDisable(false);
+                idvalid = true;
             } catch (Exception e) {
-                if (PatientEntry.isName(lastNameT.getText())
+                idvalid = false;
+            }
+
+            if (idvalid
+            && PatientEntry.isName(lastNameT.getText())
                     && PatientEntry.isName(firstNameT.getText())
                     && (new LocalDateConverter()).fromString(newValue) != null
                     && (PatientEntry.isPhoneNumber(landlineT.getText())
@@ -334,17 +349,22 @@ public class MainSceneController implements Initializable {
                         msg.setText("");
                     }
 
-            }
+            
         });
 
         landlineT.textProperty().addListener((obs, oldValue, newValue) -> {
             btn.setDisable(true);
             msg.setText("Ungültige Eingaben");
+            boolean idvalid = false;
             try {
                 Integer.parseInt(idT.getText());
-                btn.setDisable(false);
+                idvalid = true;
             } catch (Exception e) {
-                if (PatientEntry.isName(lastNameT.getText())
+                idvalid = false;
+            }
+
+            if (idvalid
+            && PatientEntry.isName(lastNameT.getText())
                     && PatientEntry.isName(firstNameT.getText())
                     && (new LocalDateConverter())
                         .fromString(birthdayT.getText()) != null
@@ -354,17 +374,22 @@ public class MainSceneController implements Initializable {
                         msg.setText("");
                     }
 
-            }
+            
         });
 
         mobileT.textProperty().addListener((obs, oldValue, newValue) -> {
             btn.setDisable(true);
             msg.setText("Ungültige Eingaben");
+            boolean idvalid = false;
             try {
                 Integer.parseInt(idT.getText());
-                btn.setDisable(false);
+                idvalid = true;
             } catch (Exception e) {
-                if (PatientEntry.isName(lastNameT.getText())
+                idvalid = false;
+            }
+
+            if (idvalid
+            && PatientEntry.isName(lastNameT.getText())
                     && PatientEntry.isName(firstNameT.getText())
                     && (new LocalDateConverter())
                         .fromString(birthdayT.getText()) != null
@@ -373,7 +398,7 @@ public class MainSceneController implements Initializable {
                         btn.setDisable(false);
                         msg.setText("");
                     }
-            }
+            
         });
 
         dialog.getDialogPane().setContent(gridpane);
