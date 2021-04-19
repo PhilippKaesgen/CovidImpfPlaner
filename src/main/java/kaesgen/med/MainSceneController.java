@@ -54,7 +54,6 @@ import javafx.print.PageLayout;
 import javafx.print.PageOrientation;
 import javafx.print.Paper;
 import javafx.print.Printer;
-import javafx.print.PrinterAttributes;
 import javafx.print.PrinterJob;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
