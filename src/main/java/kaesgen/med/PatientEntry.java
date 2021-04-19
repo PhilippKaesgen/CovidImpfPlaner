@@ -502,7 +502,7 @@ public class PatientEntry  implements Serializable {
             return false;
         }
         for (char c : name.toCharArray()) {
-            if (!Character.isAlphabetic(c) && !Character.isWhitespace(c)) {
+            if (!Character.isAlphabetic(c) && !Character.isWhitespace(c) && c!='-') {
                 return false;
             }
         }
