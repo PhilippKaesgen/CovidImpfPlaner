@@ -27,6 +27,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -49,6 +50,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.print.PageLayout;
+import javafx.print.PageOrientation;
+import javafx.print.Paper;
+import javafx.print.Printer;
+import javafx.print.PrinterAttributes;
+import javafx.print.PrinterJob;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -74,6 +81,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.transform.Scale;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
@@ -146,6 +154,9 @@ public class MainSceneController implements Initializable {
     /** open load dialog. */
     @FXML
     private MenuItem loadFile;
+
+    @FXML
+    private MenuItem printTable;
 
     /** about. */
     @FXML
@@ -452,6 +463,178 @@ public class MainSceneController implements Initializable {
 
 
     }
+
+    // ########################################################################
+
+    @FXML
+    private void printTableClicked() {
+        Dialog<Pair<LocalDate, LocalDate>> dialog = new Dialog<>();
+        dialog.setTitle("Drucken");
+        dialog.setHeaderText(
+            "Für welchen Zeitraum sollen die Patienten mit Terminen\n"
+            + "gedruckt werden?");
+
+        dialog.getDialogPane().getButtonTypes()
+        .addAll(ButtonType.OK);
+
+        Node btn = dialog.getDialogPane()
+            .lookupButton(ButtonType.OK);
+        btn.setDisable(true);
+
+        HBox vbox = new HBox();
+
+        Label msg = new Label();
+
+        //TextField startDate = new TextField();
+        DatePicker startDate = new DatePicker();
+        startDate.setPromptText("Startdatum dd.mm.jjjj");
+        startDate.setConverter(new LocalDateConverter());
+
+        //TextField endDate = new TextField();
+        DatePicker endDate = new DatePicker();
+        endDate.setPromptText("Enddatum dd.mm.jjjj");
+        endDate.setConverter(new LocalDateConverter());
+
+        startDate.valueProperty().addListener(
+        (obs, oldValue, newValue) -> {
+
+            btn.setDisable(true);
+            msg.setText("");
+            if (endDate.getValue() != null && newValue != null
+                && newValue.compareTo(endDate.getValue()) > 0) {
+                msg.setText(
+                    "Startdatum darf nicht nach dem Enddatum liegen.");
+            } else {
+                btn.setDisable(false);
+            }
+
+        });
+
+        endDate.valueProperty().addListener(
+        (obs, oldValue, newValue) -> {
+
+            btn.setDisable(true);
+            msg.setText("");
+            if (startDate.getValue() != null && newValue != null
+                && startDate.getValue().compareTo(newValue) > 0) {
+                msg.setText(
+                    "Enddatum darf nicht vor dem Startdatum liegen.");
+            } else {
+                btn.setDisable(false);
+            }
+        });
+
+        dialog.setResultConverter(okbutton -> {
+            if (okbutton == ButtonType.OK) {
+                return new Pair<>(startDate.getValue(), endDate.getValue());
+            }
+            return null;
+        });
+
+        vbox.getChildren().addAll(startDate, endDate);
+
+        dialog.getDialogPane().setContent(vbox);
+
+
+        Optional<Pair<LocalDate, LocalDate>> datesFtr = dialog.showAndWait();
+
+        datesFtr.ifPresent(dates -> {
+            LocalDate start = dates.getKey();
+            LocalDate end = dates.getValue();Task<List<PatientEntry>> getScheduledPatients =  new Task<>() {
+                @Override
+                protected List<PatientEntry> call() throws Exception {
+                    List<PatientEntry> scheduledPatients = new ArrayList<>();
+                    
+
+                    for (PatientEntry p : patients) {
+                        if (p.getFirstVaccinationDate() != null
+                        && p.getFirstVaccinationDate().compareTo(start) >= 0
+                        && p.getFirstVaccinationDate().compareTo(end) <= 0
+                        || p.getSecondVaccinationDate() != null 
+                        && p.getSecondVaccinationDate().compareTo(start) >= 0
+                        && p.getSecondVaccinationDate().compareTo(end) <= 0) {
+
+                            scheduledPatients.add(p);
+                        }
+
+                    }
+                    return scheduledPatients;
+                }
+            };
+
+            new Thread(getScheduledPatients).start();
+
+            try {
+                List<PatientEntry> list = getScheduledPatients.get();
+
+                patients.removeAll(list);
+
+                List<PatientEntry> hiddenPatients = new ArrayList<>();
+                hiddenPatients.addAll(patients);
+
+                patients.clear();
+                patients.addAll(0, list);
+
+                Alert orderList = new Alert(Alert.AlertType.INFORMATION);
+                orderList.setTitle("Patientenliste");
+                orderList.setHeaderText("Zeitraum: " + start + " bis " + end);
+                //orderList.setContentText(
+                String content = list.size() + " Patienten werden ausgedruckt.";
+                orderList.setContentText(content);
+                orderList.showAndWait();
+
+                try {
+                    printNode((Node) table1);
+                } catch (NoSuchMethodException | InstantiationException | IllegalAccessException
+                        | InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+                patients.addAll(hiddenPatients);
+
+
+            } catch (Exception e) {
+            }
+
+        });
+
+    }
+
+
+    /**
+     * As from here:
+     * https://stackoverflow.com/questions/31231021/javafx8-print-api-how-to-set-correctly-the-printable-area/31232149#31232149
+     * @param node
+     * @throws NoSuchMethodException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     */
+    private void printNode(final Node node) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+       
+        Printer printer = Printer.getDefaultPrinter();
+        
+        PageLayout pageLayout
+            = printer.createPageLayout(Paper.A4, PageOrientation.PORTRAIT, Printer.MarginType.HARDWARE_MINIMUM);
+        
+        PrinterJob job = PrinterJob.createPrinterJob();
+        
+        double scaleX
+            = pageLayout.getPrintableWidth() / node.getBoundsInParent().getWidth();
+        double scaleY
+            = pageLayout.getPrintableHeight() / node.getBoundsInParent().getHeight();
+        Scale scale = new Scale(scaleX, scaleY);
+        
+        node.getTransforms().add(scale);
+    
+        if (job != null && job.showPrintDialog(node.getScene().getWindow())) {
+          boolean success = job.printPage(pageLayout, node);
+          if (success) {
+            job.endJob();
+    
+          }
+        }
+        node.getTransforms().remove(scale);
+      }
 
     // ########################################################################
 

@@ -40,6 +40,7 @@
                   <items>
                         <MenuItem fx:id="loadFile" mnemonicParsing="false" onAction="#loadFileClicked" text="Öffnen" />
                     <MenuItem fx:id="saveFile" mnemonicParsing="false" onAction="#saveFileClicked" text="Speichern" />
+                    <MenuItem fx:id="printTable" mnemonicParsing="false" onAction="#printTableClicked" text="Drucken" />
                   </items>
                 </Menu>
                   <Menu mnemonicParsing="false" text="Funktionen">
