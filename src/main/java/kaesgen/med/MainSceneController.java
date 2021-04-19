@@ -88,7 +88,7 @@ public class MainSceneController implements Initializable {
 
     private final String lastSaveDir = "lastSaveDir.txt";
 
-    private final String fileExtension = ".ulf";
+    private final String fileExtension = "*.ulf";
 
     /**
      * Boolean variable to prevent the application from closing without saving
@@ -920,7 +920,7 @@ public class MainSceneController implements Initializable {
 
         FileChooser fc = new FileChooser();
         fc.getExtensionFilters().addAll(
-            new ExtensionFilter("*.ulf",
+            new ExtensionFilter(".ulf",
             fileExtension));
 
         File file = fc.showSaveDialog(stage);
@@ -1067,7 +1067,7 @@ public class MainSceneController implements Initializable {
 
         FileChooser fc = new FileChooser();
         fc.getExtensionFilters().addAll(
-            new ExtensionFilter("*.ulf",
+            new ExtensionFilter(".ulf",
             fileExtension));
 
         BufferedReader br;
