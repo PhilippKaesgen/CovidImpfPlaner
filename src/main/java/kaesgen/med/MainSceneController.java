@@ -21,7 +21,13 @@
  */
 package kaesgen.med;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -71,12 +77,17 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Pair;
 import net.rgielen.fxweaver.core.FxmlView;
 
 @Component
 @FxmlView("CovidImpfPlanerView.fxml")
 public class MainSceneController implements Initializable {
+
+    private final String lastSaveDir = "lastSaveDir.txt";
+
+    private final String fileExtension = ".ulf";
 
     /**
      * Boolean variable to prevent the application from closing without saving
@@ -878,6 +889,9 @@ public class MainSceneController implements Initializable {
         // Open dialog for saving a file
 
         FileChooser fc = new FileChooser();
+        fc.getExtensionFilters().addAll(
+            new ExtensionFilter("*.ulf",
+            fileExtension));
 
         File file = fc.showSaveDialog(stage);
 
@@ -946,6 +960,24 @@ public class MainSceneController implements Initializable {
 
             pwFtr.ifPresent(pw -> {
 
+                String partentPath = file.getParent();
+
+                try {
+                    FileOutputStream saveParentDir = new FileOutputStream(lastSaveDir, false);
+
+                    saveParentDir.write(partentPath.getBytes());
+
+                    saveParentDir.close();
+                } catch (FileNotFoundException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+
+
                 Task<Void> setPatientEntriesTask = new Task<Void>() {
                     @Override
                     public Void call() throws Exception {
@@ -1004,6 +1036,21 @@ public class MainSceneController implements Initializable {
         System.out.println("Loading file");
 
         FileChooser fc = new FileChooser();
+        fc.getExtensionFilters().addAll(
+            new ExtensionFilter("*.ulf",
+            fileExtension));
+
+        BufferedReader br;
+        try {
+            br = new BufferedReader(new FileReader(lastSaveDir));
+            fc.setInitialDirectory(new File(br.readLine()));
+        } catch (FileNotFoundException e2) {
+            // TODO Auto-generated catch block
+            e2.printStackTrace();
+        } catch (IOException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
 
         // Open dialog for opening a file
         File file = fc.showOpenDialog(stage);
