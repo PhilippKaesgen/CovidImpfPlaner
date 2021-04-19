@@ -38,6 +38,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import javax.swing.plaf.basic.BasicTreeUI.SelectionModelPropertyChangeHandler;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -150,6 +152,9 @@ public class MainSceneController implements Initializable {
     /** about. */
     @FXML
     private MenuItem aboutBtn;
+
+    @FXML
+    private Label patientCounterDisplay;
 
     /** column in table. */
     @FXML
@@ -1277,7 +1282,7 @@ public class MainSceneController implements Initializable {
                             if (isSelected) {
                                 r.setStyle("-fx-background-color:orange");
                             } else {
-                                r.setStyle("-fx-background-color:white");
+                                r.setStyle("");
                             }
                             changeMonitor = wasSelected != isSelected;;
                         });
@@ -1491,6 +1496,16 @@ public class MainSceneController implements Initializable {
             row.contextMenuProperty().bind(Bindings
                 .when(row.emptyProperty()).then((ContextMenu) null)
                 .otherwise(menu));
+
+            row.selectedProperty().addListener((obs, oldValue, newValue) -> {
+                if (newValue) {
+                    int index = row.getIndex() + 1;
+
+                    patientCounterDisplay
+                    .setText(index + ". Patient von "
+                    + patients.size() + " ausgewählt");
+                }
+            });
 
             return row;
         });
