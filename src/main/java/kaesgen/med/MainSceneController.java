@@ -466,135 +466,14 @@ public class MainSceneController implements Initializable {
 
     @FXML
     private void printTableClicked() {
-        Dialog<Pair<LocalDate, LocalDate>> dialog = new Dialog<>();
-        dialog.setTitle("Drucken");
-        dialog.setHeaderText(
-            "Für welchen Zeitraum sollen die Patienten mit Terminen\n"
-            + "gedruckt werden?");
-
-        dialog.getDialogPane().getButtonTypes()
-        .addAll(ButtonType.OK);
-
-        Node btn = dialog.getDialogPane()
-            .lookupButton(ButtonType.OK);
-        btn.setDisable(true);
-
-        HBox vbox = new HBox();
-
-        Label msg = new Label();
-
-        //TextField startDate = new TextField();
-        DatePicker startDate = new DatePicker();
-        startDate.setPromptText("Startdatum dd.mm.jjjj");
-        startDate.setConverter(new LocalDateConverter());
-
-        //TextField endDate = new TextField();
-        DatePicker endDate = new DatePicker();
-        endDate.setPromptText("Enddatum dd.mm.jjjj");
-        endDate.setConverter(new LocalDateConverter());
-
-        startDate.valueProperty().addListener(
-        (obs, oldValue, newValue) -> {
-
-            btn.setDisable(true);
-            msg.setText("");
-            if (endDate.getValue() != null && newValue != null
-                && newValue.compareTo(endDate.getValue()) > 0) {
-                msg.setText(
-                    "Startdatum darf nicht nach dem Enddatum liegen.");
-            } else {
-                btn.setDisable(false);
-            }
-
-        });
-
-        endDate.valueProperty().addListener(
-        (obs, oldValue, newValue) -> {
-
-            btn.setDisable(true);
-            msg.setText("");
-            if (startDate.getValue() != null && newValue != null
-                && startDate.getValue().compareTo(newValue) > 0) {
-                msg.setText(
-                    "Enddatum darf nicht vor dem Startdatum liegen.");
-            } else {
-                btn.setDisable(false);
-            }
-        });
-
-        dialog.setResultConverter(okbutton -> {
-            if (okbutton == ButtonType.OK) {
-                return new Pair<>(startDate.getValue(), endDate.getValue());
-            }
-            return null;
-        });
-
-        vbox.getChildren().addAll(startDate, endDate);
-
-        dialog.getDialogPane().setContent(vbox);
-
-
-        Optional<Pair<LocalDate, LocalDate>> datesFtr = dialog.showAndWait();
-
-        datesFtr.ifPresent(dates -> {
-            LocalDate start = dates.getKey();
-            LocalDate end = dates.getValue();
-            Task<List<PatientEntry>> getScheduledPatients =  new Task<>() {
-                @Override
-                protected List<PatientEntry> call() throws Exception {
-                    List<PatientEntry> scheduledPatients = new ArrayList<>();
-
-                    for (PatientEntry p : patients) {
-                        if (p.getFirstVaccinationDate() != null
-                        && p.getFirstVaccinationDate().compareTo(start) >= 0
-                        && p.getFirstVaccinationDate().compareTo(end) <= 0
-                        || p.getSecondVaccinationDate() != null
-                        && p.getSecondVaccinationDate().compareTo(start) >= 0
-                        && p.getSecondVaccinationDate().compareTo(end) <= 0) {
-
-                            scheduledPatients.add(p);
-                        }
-
-                    }
-                    return scheduledPatients;
-                }
-            };
-
-            new Thread(getScheduledPatients).start();
-
-            try {
-                List<PatientEntry> list = getScheduledPatients.get();
-
-                patients.removeAll(list);
-
-                List<PatientEntry> hiddenPatients = new ArrayList<>();
-                hiddenPatients.addAll(patients);
-
-                patients.clear();
-                patients.addAll(0, list);
-
-                Alert orderList = new Alert(Alert.AlertType.INFORMATION);
-                orderList.setTitle("Patientenliste");
-                orderList.setHeaderText("Zeitraum: " + start + " bis " + end);
-                //orderList.setContentText(
-                String content = list.size() + " Patienten werden ausgedruckt.";
-                orderList.setContentText(content);
-                orderList.showAndWait();
-
-                try {
-                    printNode((Node) table1);
-                } catch (NoSuchMethodException | InstantiationException
-                | IllegalAccessException
-                        | InvocationTargetException e) {
-                    e.printStackTrace();
-                }
-                patients.addAll(hiddenPatients);
-
-
-            } catch (Exception e) {
-            }
-
-        });
+       
+        try {
+            printNode((Node) table1);
+        } catch (NoSuchMethodException | InstantiationException
+        | IllegalAccessException
+                | InvocationTargetException e) {
+            e.printStackTrace();
+        }
 
     }
 
