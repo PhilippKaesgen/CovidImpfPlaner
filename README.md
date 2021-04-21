@@ -54,7 +54,7 @@ bei jeder Impfung kann umgekehrt auch nur dann abgespeichert werden, wenn zuvor
 Impfdatum und Impfstoff angegeben wurden. Der Haken beim zweiten Impftermin
 wird auch nur dann gespeichert, wenn die erste Impfung gültig abgehakt wurde.
 Dieser Mechanismus dient zur
-Sicherstellung, dass nicht aus Versehen unlogische Angaben gemacht werden.
+Sicherstellung, dass nicht aus Versehen unplausible Angaben gemacht werden.
 
 ### Woher bekomme ich das Passwort zum Speichern?
 Das Passwort wird vom Benutzer, d.h. der Arztpraxis, festgelegt. Es muss beim Speichern zur
