@@ -85,6 +85,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import javafx.util.Pair;
+import javafx.util.StringConverter;
 import net.rgielen.fxweaver.core.FxmlView;
 
 @Component
@@ -1262,14 +1263,111 @@ public class MainSceneController implements Initializable {
         id.setCellFactory(TextFieldTableCell.<PatientEntry>forTableColumn());
         lastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
         lastName
-            .setCellFactory(TextFieldTableCell.<PatientEntry>forTableColumn());
+            .setCellFactory(tc -> {
+                TextFieldTableCell<PatientEntry,String> cell = new TextFieldTableCell<>();
+                cell.setConverter(new StringConverter<String>(){
+
+                    @Override
+                    public String toString(String object) {
+                        if (object == null) {
+                            return "";
+                        }
+                        return object;
+                    }
+
+                    @Override
+                    public String fromString(String string) {
+                        if (string == null){
+                            return "";
+                        }
+                        return string;
+                    }
+                    
+                });
+
+
+                cell.textProperty().addListener((obs, oldValue, newValue) -> {
+                    PatientEntry p = ((PatientEntry) cell.getTableRow().getItem());
+                    if (p != null) {
+                        p.setLastName(newValue);
+                    }
+                });
+
+                return cell;
+            });
+        
         firstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         firstName
-            .setCellFactory(TextFieldTableCell.<PatientEntry>forTableColumn());
+        .setCellFactory(tc -> {
+            TextFieldTableCell<PatientEntry,String> cell = new TextFieldTableCell<>();
+            cell.setConverter(new StringConverter<String>(){
+
+                @Override
+                public String toString(String object) {
+                    if (object == null) {
+                        return "";
+                    }
+                    return object;
+                }
+
+                @Override
+                public String fromString(String string) {
+                    if (string == null){
+                        return "";
+                    }
+                    return string;
+                }
+                
+            });
+
+
+            cell.textProperty().addListener((obs, oldValue, newValue) -> {
+                PatientEntry p = ((PatientEntry) cell.getTableRow().getItem());
+                if (p != null) {
+                    p.setFirstName(newValue);
+                }
+            });
+
+            return cell;
+        });
+
         birthday
             .setCellValueFactory(new PropertyValueFactory<>("birthday"));
         birthday
-            .setCellFactory(TextFieldTableCell.<PatientEntry>forTableColumn());
+            
+        .setCellFactory(tc -> {
+            TextFieldTableCell<PatientEntry,String> cell = new TextFieldTableCell<>();
+            cell.setConverter(new StringConverter<String>(){
+
+                @Override
+                public String toString(String object) {
+                    if (object == null) {
+                        return "";
+                    }
+                    return object;
+                }
+
+                @Override
+                public String fromString(String string) {
+                    if (string == null){
+                        return "";
+                    }
+                    return string;
+                }
+                
+            });
+
+
+            cell.textProperty().addListener((obs, oldValue, newValue) -> {
+                PatientEntry p = ((PatientEntry) cell.getTableRow().getItem());
+                if (p != null) {
+                    p.setBirthday(newValue);
+                }
+            });
+
+            return cell;
+        });
+        
         birthday.setComparator((a, b) -> {
 
             LocalDate t1 = LocalDate.parse(a, PatientEntry.DATE_FORMATTER);
@@ -1559,6 +1657,49 @@ public class MainSceneController implements Initializable {
 
             });
             menu.getItems().add(delete);
+
+
+            MenuItem cancelFirst = new MenuItem("1. Termin absagen");
+            cancelFirst.setOnAction(e -> {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Wirklich 1. Termin absagen und Impfstoff zurücksetzen?");
+                alert.setHeaderText(
+        "Gelöschte Patienteneinträge können nicht wiederhergestellt werden.");
+
+                Optional<ButtonType> option = alert.showAndWait();
+
+                option.ifPresent(o -> {
+                    if (o == ButtonType.OK) {
+                        row.getItem().setFirstVaccinationDate(null);
+                        row.getItem().setFirstVaccine(null);
+                        table1.refresh();
+                        changeMonitor = true;
+                    }
+                });
+            });
+            menu.getItems().add(cancelFirst);
+
+
+            MenuItem cancelSecond = new MenuItem("2. Termin absagen");
+            cancelSecond.setOnAction(e -> {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Wirklich 2. Termin absagen und Impfstoff zurücksetzen?");
+                alert.setHeaderText(
+        "Gelöschte Patienteneinträge können nicht wiederhergestellt werden.");
+
+                Optional<ButtonType> option = alert.showAndWait();
+
+                option.ifPresent(o -> {
+                    if (o == ButtonType.OK) {
+                        row.getItem().setSecondVaccinationDate(null);
+                        row.getItem().setSecondVaccine(null);
+                        table1.refresh();
+                        changeMonitor = true;
+                    }
+                });
+            });
+            menu.getItems().add(cancelSecond);
+
 
             row.contextMenuProperty().bind(Bindings
                 .when(row.emptyProperty()).then((ContextMenu) null)

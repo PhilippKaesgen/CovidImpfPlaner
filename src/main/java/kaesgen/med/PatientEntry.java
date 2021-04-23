@@ -498,12 +498,12 @@ public class PatientEntry  implements Serializable {
      * @return boolean
      */
     public static boolean isName(final String name) {
-        if (name.equals("")) {
+        if ( name == null || name.equals("")) {
             return false;
         }
         for (char c : name.toCharArray()) {
             if (!Character.isAlphabetic(c) && !Character.isWhitespace(c)
-            && c != '-') {
+            && c != '-' && c != 'ä' && c != 'ö' && c != 'ü' && c != 'ß') {
                 return false;
             }
         }
