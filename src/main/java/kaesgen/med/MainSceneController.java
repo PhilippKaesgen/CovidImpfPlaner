@@ -1334,7 +1334,6 @@ public class MainSceneController implements Initializable {
         birthday
             .setCellValueFactory(new PropertyValueFactory<>("birthday"));
         birthday
-            
         .setCellFactory(tc -> {
             TextFieldTableCell<PatientEntry,String> cell = new TextFieldTableCell<>();
             cell.setConverter(new StringConverter<String>(){
@@ -1378,13 +1377,106 @@ public class MainSceneController implements Initializable {
         additionalInfo
             .setCellValueFactory(new PropertyValueFactory<>("additionalInfo"));
         additionalInfo
-            .setCellFactory(TextFieldTableCell.<PatientEntry>forTableColumn());
+        .setCellFactory(tc -> {
+            TextFieldTableCell<PatientEntry,String> cell = new TextFieldTableCell<>();
+            cell.setConverter(new StringConverter<String>(){
+
+                @Override
+                public String toString(String object) {
+                    if (object == null) {
+                        return "";
+                    }
+                    return object;
+                }
+
+                @Override
+                public String fromString(String string) {
+                    if (string == null){
+                        return "";
+                    }
+                    return string;
+                }
+                
+            });
+
+
+            cell.textProperty().addListener((obs, oldValue, newValue) -> {
+                PatientEntry p = ((PatientEntry) cell.getTableRow().getItem());
+                if (p != null) {
+                    p.setAdditionalInfo(newValue);
+                }
+            });
+
+            return cell;
+        });
         landline.setCellValueFactory(new PropertyValueFactory<>("landline"));
         landline
-        .setCellFactory(TextFieldTableCell.<PatientEntry>forTableColumn());
+        .setCellFactory(tc -> {
+            TextFieldTableCell<PatientEntry,String> cell = new TextFieldTableCell<>();
+            cell.setConverter(new StringConverter<String>(){
+
+                @Override
+                public String toString(String object) {
+                    if (object == null) {
+                        return "";
+                    }
+                    return object;
+                }
+
+                @Override
+                public String fromString(String string) {
+                    if (string == null){
+                        return "";
+                    }
+                    return string;
+                }
+                
+            });
+
+
+            cell.textProperty().addListener((obs, oldValue, newValue) -> {
+                PatientEntry p = ((PatientEntry) cell.getTableRow().getItem());
+                if (p != null) {
+                    p.setLandline(newValue);
+                }
+            });
+
+            return cell;
+        });
         mobile.setCellValueFactory(new PropertyValueFactory<>("mobile"));
         mobile
-        .setCellFactory(TextFieldTableCell.<PatientEntry>forTableColumn());
+        .setCellFactory(tc -> {
+            TextFieldTableCell<PatientEntry,String> cell = new TextFieldTableCell<>();
+            cell.setConverter(new StringConverter<String>(){
+
+                @Override
+                public String toString(String object) {
+                    if (object == null) {
+                        return "";
+                    }
+                    return object;
+                }
+
+                @Override
+                public String fromString(String string) {
+                    if (string == null){
+                        return "";
+                    }
+                    return string;
+                }
+                
+            });
+
+
+            cell.textProperty().addListener((obs, oldValue, newValue) -> {
+                PatientEntry p = ((PatientEntry) cell.getTableRow().getItem());
+                if (p != null) {
+                    p.setMobile(newValue);
+                }
+            });
+
+            return cell;
+        });
 
         firstVaccinationDone
             .setCellValueFactory(
